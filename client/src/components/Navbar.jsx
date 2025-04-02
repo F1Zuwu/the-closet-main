@@ -11,8 +11,8 @@ const Navbar = () => {
             </button>
 
             <div class="absolute flex right-8 top-4 font-w-medium text-UnSelPrimary">
-                <button class="pr-4"><h3 class="hover:text-primary">Saved</h3></button>
                 <button onClick={() => window.location.href = "/add"}><h3 class="hover:text-primary">Add new</h3></button>
+                <button class="pl-4" onClick={() => window.location.href = "/login"}><h3 class="hover:text-primary">Login</h3></button>
             </div>
         </div>
     )

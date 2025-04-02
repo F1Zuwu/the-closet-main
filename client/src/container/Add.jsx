@@ -28,7 +28,7 @@ const Add = () => {
             <div class="h-full w-full flex items-center justify-center absolute">
                 <input accept=".jpg,.png,.jpeg" onChange={() => handleImageUpload()} id="fileUploadInput" class="hidden" type="file"></input>
                 <div class="relative cursor-pointer" onClick={() => { document.getElementById("fileUploadInput").click() }}>
-                    <img id="img" class="limit-img rounded-md" src={require("../assets/placeholder.png")}></img>
+                    <img alt="preview" id="img" class="limit-img rounded-md" src={require("../assets/placeholder.png")}></img>
                     <div class="absolute w-full h-full flex justify-center items-center top-0">
                         <div id="add-img-txt">
                             <div class="w-full flex justify-center">
