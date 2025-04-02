@@ -7,6 +7,8 @@ import Footer from "../components/Footer";
 
 const Home = () => {
 
+    const userData = localStorage.getItem("auth")
+
     const data = [{ "name": "wht", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg" },
     { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=1" },
     { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=2" },
@@ -49,23 +51,37 @@ const Home = () => {
                         <Tags></Tags>
                     </div>
                     <div class="flex justify-center pt-12 pl-24 pr-24 pb-24">
-                        <Masonry
-                            columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }}
-                            gap={16}
-                        >
-                            {data.map((value, index) => {
-                                return (
-                                    <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show">
-                                        <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image}></img></TiltComponent>
-                                    </div>
-                                )
-                            })}
+                        {!userData ? (
+                            <h1><button class="underline" onClick={() => window.location.href = "/login"}>Login</button> to start viewing your outfits!</h1>
+                        ) : (
 
-                        </Masonry>
+                            <Masonry
+                                columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }}
+                                gap={16}
+                            >
+                                {data.map((value, index) => {
+                                    return (
+                                        <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => window.location.href = "/outfit/" + value.name}>
+                                            <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image}></img></TiltComponent>
+                                        </div>
+                                    )
+                                })}
+
+                            </Masonry>
+                        )}
+
                     </div>
+                    {userData && (
+                        <Footer></Footer>
+                    )}
+                </div>
+
+            </div>
+            {!userData && (
+                <div class="absolute bottom-0 w-full">
                     <Footer></Footer>
                 </div>
-            </div>
+            )}
         </div>
     )
 }
