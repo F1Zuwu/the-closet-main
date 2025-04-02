@@ -1,9 +1,9 @@
 import React from "react";
 
 const Footer = () => {
-    return(
+    return (
         <div class="bg-FooterColor w-full flex justify-center p-8">
-            <h1>You have reached the end of your closet!</h1> <a class="pl-2" href="#navbar">Back on top</a>
+            <h1>You have reached the end of your closet!</h1> <a class="pl-2 underline" href="#navbar">Back on top</a>
         </div>
     )
 }
