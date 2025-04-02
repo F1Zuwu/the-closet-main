@@ -27,11 +27,13 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
+    
   });
 
   Fits.associate = (models) => {
-    Fits.belongsTo(models.Clothes, { foreignKey: "clothes_id" });
-    Fits.belongsTo(models.Tags, { foreignKey: "tag_id" });
+    Fits.belongsTo(models.clothing, { foreignKey: "clothing_id" });
+    Fits.belongsTo(models.tags, { foreignKey: "tag_id" });
+    Fits.belongsTo(models.tags, { foreignKey: "accessory_id" });
   };
 
   return Fits;

@@ -115,7 +115,6 @@ class userController extends BaseController {
         });
     });
 }
-
 }
 
 module.exports = new userController();

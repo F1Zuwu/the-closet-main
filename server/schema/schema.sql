@@ -1,7 +1,8 @@
-CREATE TABLE clothes (
-  item_id INT UNSIGNED NOT NULL AUTO_INCREMENT, 
-  name VARCHAR(150) NOT NULL,                                                      
-  PRIMARY KEY (item_id)                                 
+CREATE TABLE clothing (
+  clothing_id INT UNSIGNED NOT NULL AUTO_INCREMENT, 
+  name VARCHAR(150) NOT NULL,
+  image_url VARCHAR(300) NOT NULL,                                                      
+  PRIMARY KEY (clothing_id)                                 
 );
 
 CREATE TABLE fits (
