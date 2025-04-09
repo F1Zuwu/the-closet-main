@@ -28,7 +28,7 @@ function logout() {
 // ENDPOINT FUNCTIONS
 const registerUser = async (username, email, password) => {
     try {
-        const response = await fetch(DomainUrl + '/api/user',
+        const response = await fetch(DomainUrl + '/api/user/register',
             {
                 method: "POST",
                 body: JSON.stringify(
@@ -73,7 +73,7 @@ const checkAuthStatus = async () => {
 }
 
 const userLogin = async (identifier, password) => {
-    console.log(identifier, password)
+    //console.log(identifier, password)
     try {
         const response = await fetch(DomainUrl + '/api/user/login',
             {
@@ -91,10 +91,10 @@ const userLogin = async (identifier, password) => {
 
         if (data.success) {
             saveToken(data.token, data.user)
-            return true;
+            return data;
         } else {
             console.log(data)
-            return false;
+            return data;
         }
     } catch (error) {
         console.error("CODE | LOGIN ERROR HAS OCCURED!", error)

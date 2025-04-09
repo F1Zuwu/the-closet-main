@@ -7,10 +7,9 @@ const TiltComponent = (props) => {
         <Tilt glareEnable={true} tiltMaxAngleX={10} 
         tiltMaxAngleY={10} perspective={1000} 
         glareColor={"rgb(255,255,255)"}>
-            
             {props.children}
             <div class="absolute translate-x-4 -translate-y-9 opacity-0 item-name">
-                <h1>{props.cardName}</h1>
+                <h1 class="font-w-title">{props.cardName}</h1>
             </div>
         </Tilt>
     )

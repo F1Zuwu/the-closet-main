@@ -39,6 +39,10 @@ body {
     background-color: #F5EBE0;
 }
 
+.popup-bg {
+    background-color: #d6c6b4;
+}
+
 .card-hover-name-show:hover .item-name {
     -webkit-transition-duration: 0.2s;
     opacity: 1;

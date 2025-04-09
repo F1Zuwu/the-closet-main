@@ -4,6 +4,7 @@ import Tags from "../components/Tags";
 import Masonry from "react-layout-masonry";
 import TiltComponent from "../components/TiltComponent";
 import Footer from "../components/Footer";
+import gsap from "gsap";
 
 const Home = () => {
 
@@ -29,17 +30,31 @@ const Home = () => {
     { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=8" },
     ]
 
+    window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+            gsap.fromTo(".container-closet", {opacity:0, scale:1.1, translateY:50},{opacity:1, scale:1.0, translateY:0})
+        }, 400);
+        
+    })
+
+    const HandleTransistion = (val) => {
+        gsap.to(".container-closet", {opacity:0, scale:1.1, translateY:50})
+
+        setTimeout(() => {
+            window.location.href = "/outfit/" + val
+        }, 350);
+        
+    }
+
     return (
         <div class="bg-backgroundColor h-screen">
             <img alt="" class="input-pass absolute" src={require('../assets/deco.png')}></img>
             <img alt="" class="input-pass absolute bottom-0 right-0" src={require('../assets/deco_1.png')}></img>
             <div class="navbar-gradient">{/* Gradient Decoration */}</div>
-            <div class="w-full absolute">
-                <Navbar></Navbar>
-            </div>
+            
 
             <div class="flex justify-center w-full absolute top-32">
-                <div class="w-full">
+                <div class="w-full overflow-x-hidden">
                     <h1 class="text-center text-base font-w-title pb-4">Find you’r perfect outfit for the day!</h1>
                     <div class="w-full flex justify-center relative">
                         <div class="w-2/3 relative">
@@ -50,7 +65,8 @@ const Home = () => {
                     <div class="w-full justify-center flex">
                         <Tags></Tags>
                     </div>
-                    <div class="flex justify-center pt-12 pl-24 pr-24 pb-24">
+                    <div class="flex justify-center pt-12 pl-24 pr-24 pb-24 container-closet opacity-0 overflow-x-hidden">
+                        
                         {!userData ? (
                             <h1><button class="underline" onClick={() => window.location.href = "/login"}>Login</button> to start viewing your outfits!</h1>
                         ) : (
@@ -61,7 +77,7 @@ const Home = () => {
                             >
                                 {data.map((value, index) => {
                                     return (
-                                        <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => window.location.href = "/outfit/" + value.name}>
+                                        <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => HandleTransistion(value.name)}>
                                             <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image}></img></TiltComponent>
                                         </div>
                                     )
@@ -82,6 +98,9 @@ const Home = () => {
                     <Footer></Footer>
                 </div>
             )}
+            <div class="w-full absolute">
+                <Navbar></Navbar>
+            </div>
         </div>
     )
 }
