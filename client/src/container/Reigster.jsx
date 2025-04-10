@@ -1,8 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import Navbar from "../components/Navbar";
 import { registerUser } from "../api/Account";
+import ErrorPop from "../components/ErrorPop";
 
 const Register = () => {
+    const [isErrorOpen, setErrorIsOpen] = useState(false)
+    const [errorMessage, setErrorMessage] = useState({})
+
+    window.addEventListener("DOMContentLoaded" ,() => {
+        const username = document.getElementById("name")
+        const passwordCheck = document.getElementById("passwordCheck")
+        username.focus()
+
+        passwordCheck.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                RegisterUser()
+            }
+        })
+    })
 
     const RegisterUser = () => {
         const email = document.getElementById("email").value
@@ -10,26 +25,19 @@ const Register = () => {
         const password = document.getElementById("password").value
         const passwordCheck = document.getElementById("passwordCheck").value
 
-        if (!email || !username || !password || !passwordCheck) {
-            alert("All fields need to be filled.")
-            return false;
-        }
-
         if (password === passwordCheck) {
             registerUser(username, email, password)
-                .then((res) => {
-                    if (res === true) {
-                        console.log(res)
-                        window.location.href = "/"
-                    } else if (res === false) {
-                        alert("User creation failed.")
-                    } else {
-                        console.error("Unexpected response.")
-                    }
-                })
+            .then((res) => {
+                if (res.success === true) {
+                    window.location.href = "/"
+                } else {
+                    setErrorMessage({message:res.error, title:"Failed!"})
+                    setErrorIsOpen(true)
+                }
+            })
         } else {
-            alert("Password's do not match!")
-            return false;
+            setErrorMessage({message:"Passwords do not match!", title:"Failed!"})
+            setErrorIsOpen(true)
         }
     }
 
@@ -53,6 +61,9 @@ const Register = () => {
                     <h1 class="text-center mt-1">Alerady have an account? <button onClick={() => window.location.href = "/login"} class="underline cursor-pointer">Log in!</button></h1>
                 </div>
             </div>
+            {isErrorOpen && (
+                <ErrorPop message={errorMessage} setIsOpen={setErrorIsOpen}></ErrorPop>
+            )}
         </div>
     )
 }

@@ -63,8 +63,8 @@ const Home = () => {
                             >
                                 {fitsData.map((value, index) => {
                                     return (
-                                        <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => HandleTransistion(value.name)}>
-                                            <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image}></img></TiltComponent>
+                                        <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => HandleTransistion(value.fit_id)}>
+                                            <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image_url}></img></TiltComponent>
                                         </div>
                                     )
                                 })}

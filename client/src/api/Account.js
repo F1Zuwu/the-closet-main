@@ -45,9 +45,9 @@ const registerUser = async (username, email, password) => {
         console.log(data)
         if (data.success) {
             saveToken(data.token, data.user)
-            return true;
+            return data;
         } else {
-            return false;
+            return data;
         }
     } catch (error) {
         console.error("CODE | LOGIN ERROR HAS OCCURED!", error)

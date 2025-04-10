@@ -8,6 +8,18 @@ const Login = () => {
     const [isErrorOpen, setErrorIsOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState({})
 
+    window.addEventListener("DOMContentLoaded" ,() => {
+        const username = document.getElementById("name")
+        const password = document.getElementById("password")
+        username.focus()
+
+        password.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                AuthUser()
+            }
+        })
+    })
+
     const AuthUser = () => {
         const username = document.getElementById("name").value
         const password = document.getElementById("password").value

@@ -83,7 +83,7 @@ class fitsController extends BaseController {
 
   async getFit(req, res) {
     this.handleRequest(req, res, async () => {
-      const { fit_id } = req.body;
+      const { fit_id } = req.params;
       try {
         const fit = await models.fits.findOne({
           where: { fit_id },

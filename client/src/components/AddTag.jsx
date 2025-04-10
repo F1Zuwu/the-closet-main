@@ -11,7 +11,6 @@ const AddTag = ({ setIsTagWindowOpen }) => {
         const input = document.getElementById("tag-name-input")
         input.focus()
         input.addEventListener("keydown", (e) => {
-            console.log(e.key)
             if (e.key === "Enter") {
                 handleAddTag()
             }
@@ -48,7 +47,7 @@ const AddTag = ({ setIsTagWindowOpen }) => {
             <div class="bg-pop-container absolute bg-backgroundColor rounded-md p-6 border-black opacity-0 min-w-96">
                 <h1 class="text-center font-w-title">Add tag</h1>
                 <p class="text-center font-w-light">Type your tag name to add</p>
-                <input placeholder="My cool summer outfits." maxLength={50} id="tag-name-input" class="pl-1 rounded-lg w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"></input>
+                <input placeholder="Alternative, casual, formal." maxLength={50} id="tag-name-input" class="pl-1 rounded-lg w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"></input>
                 <button class="bg-TagsBackground rounded-lg w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5" onClick={() => handleAddTag()}>Add</button>
                 <button class="bg-TagsBackground rounded-lg w-full flex justify-center items-center mt-2 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5" onClick={() => HandleClose()}>Close</button>
             </div>
