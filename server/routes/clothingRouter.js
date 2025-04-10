@@ -1,7 +1,7 @@
 const clothingController = require("../controllers/clothingController");
 const BaseRouter = require("./BaseRouter");
 
-class userRouter extends BaseRouter {
+class clothingRouter extends BaseRouter {
   constructor() {
     super();
     this.registerRoutes();
@@ -14,4 +14,4 @@ class userRouter extends BaseRouter {
   }
 }
 
-module.exports = new userRouter().getRouter();
+module.exports = new clothingRouter().getRouter();

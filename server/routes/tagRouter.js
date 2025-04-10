@@ -1,7 +1,7 @@
 const tagController = require("../controllers/tagController");
 const BaseRouter = require("./BaseRouter");
 
-class userRouter extends BaseRouter {
+class tagRouter extends BaseRouter {
   constructor() {
     super();
     this.registerRoutes();
@@ -15,4 +15,4 @@ class userRouter extends BaseRouter {
   }
 }
 
-module.exports = new userRouter().getRouter();
+module.exports = new tagRouter().getRouter();

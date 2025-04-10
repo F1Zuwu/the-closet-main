@@ -1,6 +1,4 @@
-const { DataTypes } = require("sequelize");
-
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Clothing = sequelize.define("clothing", {
     clothing_id: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -22,7 +20,10 @@ module.exports = (sequelize) => {
   });
 
   Clothing.associate = (models) => {
-    Clothing.hasMany(models.Fits, { foreignKey: "clothing_id" });
+    Clothing.belongsToMany(models.fits, {
+      through: "FitClothing",
+      foreignKey: "clothing_id",
+    });
   };
 
   return Clothing;

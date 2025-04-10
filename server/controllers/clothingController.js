@@ -18,6 +18,7 @@ class clothingController extends BaseController {
           .json({ success: false, error: "fields can not be empty!!!" });
       }
       try {
+        console.log("Received clothing data:", req.body);
         const clothing = await models.clothing.create({
           name,
           image_url,
@@ -45,7 +46,7 @@ class clothingController extends BaseController {
 
   async getClothing(req, res) {
     this.handleRequest(req, res, async () => {
-      const { clothing_id, name, image_url } = req.body;
+      const { clothing_id } = req.body;
       try {
         const clothing = await models.clothing.findOne({
           where: { clothing_id },
@@ -97,6 +98,7 @@ class clothingController extends BaseController {
 
         return res.status(201).json({
           success: true,
+          message: "Clothing item deleted.",
           clothing: {
             id: clothing.clothing_id,
           },

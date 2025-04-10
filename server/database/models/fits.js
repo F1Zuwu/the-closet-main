@@ -1,7 +1,5 @@
-const { DataTypes } = require("sequelize");
-
-module.exports = (sequelize) => {
-  const Fits = sequelize.define("Fits", {
+module.exports = (sequelize, DataTypes) => {
+  const Fits = sequelize.define("fits", {
     fit_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
@@ -11,29 +9,37 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(150),
       allowNull: false,
     },
-    clothes_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-    },
-    accessory_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true,
-    },
     image_url: {
       type: DataTypes.STRING(300),
       allowNull: false,
     },
-    tag_id: {
+    user_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
-    
+  }, {
+    freezeTableName: true,
+    timestamps: false,
   });
 
   Fits.associate = (models) => {
-    Fits.belongsTo(models.clothing, { foreignKey: "clothing_id" });
-    Fits.belongsTo(models.tags, { foreignKey: "tag_id" });
-    Fits.belongsTo(models.tags, { foreignKey: "accessory_id" });
+    Fits.belongsToMany(models.clothing, {
+      through: "FitClothing",
+      foreignKey: "fit_id",
+      otherKey: "clothing_id",
+    });
+    
+    Fits.belongsToMany(models.tags, {
+      through: "FitTags",
+      foreignKey: "fit_id",
+      otherKey: "tag_id",
+    });
+    
+    Fits.belongsToMany(models.accessory, {
+      through: "FitAccessories",
+      foreignKey: "fit_id",
+      otherKey: "accessory_id",
+    });
   };
 
   return Fits;

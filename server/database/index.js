@@ -29,7 +29,7 @@ sequelize.authenticate()
 
 const models = {};
 fs.readdirSync(__dirname + '/models').forEach(file => {
-  const model = require(path.join(__dirname, 'models', file))(sequelize);
+  const model = require(path.join(__dirname, 'models', file))(sequelize, Sequelize.DataTypes);
   models[model.name] = model;
 });
 

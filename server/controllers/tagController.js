@@ -12,16 +12,15 @@ class tagController extends BaseController {
 
   async addTag(req, res) {
     this.handleRequest(req, res, async () => {
-      const { name, image_url } = req.body;
-      if (!name || !image_url) {
+      const { tag_name } = req.body;
+      if (!tag_name) {
         return res
           .status(400)
-          .json({ success: false, error: "fields can not be empty!!!" });
+          .json({ success: false, error: "field can not be empty!!!" });
       }
       try {
         const tag = await models.tags.create({
-          name,
-          image_url,
+          tag_name
         });
         console.log("tag:", tag);
 
@@ -29,8 +28,7 @@ class tagController extends BaseController {
           success: true,
           message: "Tag added",
           tag: {
-            name: tag.name,
-            image_url: tag.image_url,
+            tag_name: tag.name,
           },
         });
       } catch (dbErr) {
@@ -65,7 +63,7 @@ class tagController extends BaseController {
 
   async getTag(req, res) {
     this.handleRequest(req, res, async () => {
-      const { tag_id, name, image_url } = req.body;
+      const { tag_id } = req.body;
       try {
         const tag = await models.tags.findOne({
           where: { tag_id },
@@ -81,8 +79,7 @@ class tagController extends BaseController {
             success: true,
             tag: {
               id: tag.tag_id,
-              name: tag.name,
-              image_url: tag.image_url,
+              tag_name: tag.name,
             },
           });
         }

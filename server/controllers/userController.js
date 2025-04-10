@@ -109,12 +109,12 @@ class userController extends BaseController {
 
   async getSession(req, res) {
     this.handleRequest(req, res, async () => {
-        return res.status(200).json({ 
-            success: true,
-            user: req.user 
-        });
+      return res.status(200).json({
+        success: true,
+        user: req.user,
+      });
     });
-}
+  }
 }
 
 module.exports = new userController();
