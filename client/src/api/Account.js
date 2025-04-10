@@ -14,7 +14,7 @@ const fetchWithAuth = async (url, options = {}) => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
     };
-    return fetch(url, {
+    return fetch(DomainUrl + url, {
         ...options,
         headers
     });
@@ -102,4 +102,4 @@ const userLogin = async (identifier, password) => {
     }
 }
 
-module.exports = { registerUser, checkAuthStatus, userLogin }; 
+module.exports = { registerUser, checkAuthStatus, userLogin, fetchWithAuth }; 

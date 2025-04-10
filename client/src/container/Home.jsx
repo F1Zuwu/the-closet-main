@@ -1,49 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Tags from "../components/Tags";
 import Masonry from "react-layout-masonry";
 import TiltComponent from "../components/TiltComponent";
 import Footer from "../components/Footer";
 import gsap from "gsap";
+import { fetchWithAuth } from "../api/Account";
+import AddTag from "../components/AddTag";
 
 const Home = () => {
-
     const userData = localStorage.getItem("auth")
+    const [isAddTagWindowOpen, setIsTagWindowOpen] = useState(false)
+    const [fitsData, setFitsData] = useState([])
 
-    const data = [{ "name": "wht", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=1" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=2" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=3" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=4" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=5" },
-    { "name": "wht", image: "https://static.scientificamerican.com/sciam/cache/file/2AE14CDD-1265-470C-9B15F49024186C10_source.jpg?w=600" },
-    { "name": "i feel so sigma", image: "https://images-ext-1.discordapp.net/external/mcpMdtTXKHxgvY8yttN59h0yRjkiTYD2l-IRoAc6wys/https/lh6.googleusercontent.com/proxy/eg3X_bnt7s0NH_vly8iac6uRIVgWOxhSH4CWFCiLULerYTNkMP6AHWVWHT63eRgfrOAgPAGyVhWxNH2fV4wtlyRTSPqaMPMQ4Q?format=webp" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=1" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=2" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=3" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=4" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=7" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=1" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=4" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=10" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=9" },
-    { "name": "wht", image: "https://picsum.photos/1080/1080/?blur=8" },
-    ]
-
-    window.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-            gsap.fromTo(".container-closet", {opacity:0, scale:1.1, translateY:50},{opacity:1, scale:1.0, translateY:0})
-        }, 400);
-        
-    })
+    useEffect(() => {
+        fetchWithAuth("/api/fit/getall").then(async (res) => {
+            const data = await res.json()
+            setFitsData(data.fits)
+            gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
+        })
+    }, [])
 
     const HandleTransistion = (val) => {
-        gsap.to(".container-closet", {opacity:0, scale:1.1, translateY:50})
+        gsap.to(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 })
 
         setTimeout(() => {
             window.location.href = "/outfit/" + val
         }, 350);
-        
+
     }
 
     return (
@@ -51,7 +35,7 @@ const Home = () => {
             <img alt="" class="input-pass absolute" src={require('../assets/deco.png')}></img>
             <img alt="" class="input-pass absolute bottom-0 right-0" src={require('../assets/deco_1.png')}></img>
             <div class="navbar-gradient">{/* Gradient Decoration */}</div>
-            
+
 
             <div class="flex justify-center w-full absolute top-32">
                 <div class="w-full overflow-x-hidden">
@@ -63,10 +47,12 @@ const Home = () => {
                         </div>
                     </div>
                     <div class="w-full justify-center flex">
-                        <Tags></Tags>
+                        <Tags setIsTagWindowOpen={setIsTagWindowOpen}></Tags>
                     </div>
-                    <div class="flex justify-center pt-12 pl-24 pr-24 pb-24 container-closet opacity-0 overflow-x-hidden">
-                        
+                    <div id="container-fits-" class="flex justify-center pt-12 pl-24 pr-24 pb-24 container-closet opacity-0 overflow-x-hidden">
+                        {fitsData.length === 0 && userData && (
+                            <h1><button class="underline" onClick={() => window.location.href = "/add"}>Add</button> fits to your collection to start viewing them!</h1>
+                        )}
                         {!userData ? (
                             <h1><button class="underline" onClick={() => window.location.href = "/login"}>Login</button> to start viewing your outfits!</h1>
                         ) : (
@@ -75,7 +61,7 @@ const Home = () => {
                                 columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }}
                                 gap={16}
                             >
-                                {data.map((value, index) => {
+                                {fitsData.map((value, index) => {
                                     return (
                                         <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => HandleTransistion(value.name)}>
                                             <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image}></img></TiltComponent>
@@ -87,20 +73,25 @@ const Home = () => {
                         )}
 
                     </div>
-                    {userData && (
+                    {fitsData.lenght > 0 && (
                         <Footer></Footer>
                     )}
                 </div>
 
             </div>
-            {!userData && (
+            {fitsData.length === 0 && (
                 <div class="absolute bottom-0 w-full">
                     <Footer></Footer>
                 </div>
             )}
+
+
             <div class="w-full absolute">
                 <Navbar></Navbar>
             </div>
+            {isAddTagWindowOpen && (
+                <AddTag setIsTagWindowOpen={setIsTagWindowOpen}></AddTag>
+            )}
         </div>
     )
 }

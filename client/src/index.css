@@ -65,3 +65,15 @@ body {
     height: 320px !important;
     width: 320px !important;
 }
+
+.tag-container .tag-container-remove {
+    -webkit-transition-duration: 0.2s;
+    width: 0px;
+    opacity: 0;
+}
+
+.tag-container:hover .tag-container-remove {
+    -webkit-transition-duration: 0.2s;
+    width: 32px;
+    opacity: 1;
+}
