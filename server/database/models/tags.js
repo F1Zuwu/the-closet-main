@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(150),
         allowNull: false,
       },
+      user_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
@@ -23,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       through: "FitTags",
       foreignKey: "tag_id",
     });
+
+    Tags.belongsTo(models.users, {
+      foreignKey: "user_id",
+    });
+    
   };
 
   return Tags;

@@ -1,5 +1,6 @@
 const tagController = require("../controllers/tagController");
 const BaseRouter = require("./BaseRouter");
+const { checkAuthenticated } = require("../middleware/auth");
 
 class tagRouter extends BaseRouter {
   constructor() {
@@ -8,10 +9,10 @@ class tagRouter extends BaseRouter {
   }
 
   registerRoutes() {
-    this.registerRoute("post", "/tag", tagController.addTag);
-    this.registerRoute("get", "/tag/getAll", tagController.getAllTags);
-    this.registerRoute("get", "/tag/", tagController.getTag);
-    this.registerRoute("delete", "/tag", tagController.deleteTag);
+    this.registerRoute("post", "/tag", checkAuthenticated, tagController.addTag);
+    this.registerRoute("get", "/tag/getAll", checkAuthenticated, tagController.getAllTags);
+    this.registerRoute("get", "/tag/", checkAuthenticated, tagController.getTag);
+    this.registerRoute("delete", "/tag", checkAuthenticated, tagController.deleteTag);
   }
 }
 

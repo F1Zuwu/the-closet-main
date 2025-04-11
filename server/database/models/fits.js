@@ -40,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "fit_id",
       otherKey: "accessory_id",
     });
+
+    Fits.belongsTo(models.users, {
+      foreignKey: "user_id",
+    });
+    
   };
 
   return Fits;

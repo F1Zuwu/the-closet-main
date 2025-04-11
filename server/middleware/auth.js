@@ -13,8 +13,9 @@ const checkAuthenticated = (req, res, next) => {
     if (err) {
       return res.status(401).json({ message: 'You are not logged in', success: false });
     }
-    
+    console.log("Authenticated user:", user);
     req.user = user;
+
     next();
   });
 };

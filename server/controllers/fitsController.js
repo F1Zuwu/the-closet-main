@@ -65,10 +65,27 @@ class fitsController extends BaseController {
   async getAllFits(req, res) {
     this.handleRequest(req, res, async () => {
       try {
-        const fits = await models.fits.findAll();
-        return res.status(201).json({
+        const userId = req.user.id;
+        const fits = await models.fits.findAll({
+          where: { user_id: userId },
+          include: [
+            {
+              model: models.clothing,
+              through: { attributes: [] },
+            },
+            {
+              model: models.tags,
+              through: { attributes: [] },
+            },
+            {
+              model: models.accessory,
+              through: { attributes: [] },
+            },
+          ],
+        });
+        return res.status(200).json({
           success: true,
-          fits: fits,
+          fits,
         });
       } catch (dbErr) {
         console.error("Database error occured: ", dbErr);
@@ -86,20 +103,14 @@ class fitsController extends BaseController {
       const { fit_id } = req.params;
       try {
         const fit = await models.fits.findOne({
-          where: { fit_id },
+          where: {
+            fit_id,
+            user_id: req.user.id,
+          },
           include: [
-            {
-              model: models.clothing,
-              through: { attributes: [] }, 
-            },
-            {
-              model: models.tags,
-              through: { attributes: [] },
-            },
-            {
-              model: models.accessory,
-              through: { attributes: [] },
-            },
+            { model: models.clothing, through: { attributes: [] } },
+            { model: models.tags, through: { attributes: [] } },
+            { model: models.accessory, through: { attributes: [] } },
           ],
         });
   

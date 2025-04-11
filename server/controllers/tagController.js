@@ -20,7 +20,8 @@ class tagController extends BaseController {
       }
       try {
         const tag = await models.tags.create({
-          tag_name
+          tag_name,
+          user_id: req.user.id,
         });
         console.log("tag:", tag);
 
@@ -45,8 +46,11 @@ class tagController extends BaseController {
   async getAllTags(req, res) {
     this.handleRequest(req, res, async () => {
       try {
-        const tags = await models.tags.findAll();
-        return res.status(201).json({
+        const userId = req.user.id;
+        const tags = await models.tags.findAll({
+          where: { user_id: userId },
+        });
+        return res.status(200).json({
           success: true,
           tags: tags,
         });
