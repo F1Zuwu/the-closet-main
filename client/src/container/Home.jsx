@@ -48,7 +48,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div class="w-full justify-center flex">
-                        <Tags setIsTagWindowOpen={setIsTagWindowOpen}></Tags>
+                        <Tags isHomePage={true} setIsTagWindowOpen={setIsTagWindowOpen}></Tags>
                     </div>
                     <div id="container-fits-" class="flex justify-center pt-12 pl-24 pr-24 pb-24 container-closet opacity-0 overflow-x-hidden">
                         {fitsData.length === 0 && userData && (
