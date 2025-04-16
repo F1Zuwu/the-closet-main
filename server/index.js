@@ -6,6 +6,7 @@ const accessoryRouter = require("./routes/accessoryRouter");
 const tagRouter = require("./routes/tagRouter");
 const corsHandler = require('./middleware/cors');
 const fitRouter = require("./routes/fitRouter");
+const searchRoutes = require('./routes/search');
 const app = express();
 
 app.use(express.json());
@@ -20,6 +21,8 @@ app.use("/api", clothingRouter);
 app.use("/api", accessoryRouter);
 app.use("/api", tagRouter)
 app.use("/api", fitRouter)
+app.use('/api', searchRoutes);
+
 
 app.listen(3005, () => {
   console.log("👍 | http://localhost:3005");
