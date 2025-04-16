@@ -105,7 +105,6 @@ class fitsController extends BaseController {
         const fit = await models.fits.findOne({
           where: {
             fit_id,
-            user_id: req.user.id,
           },
           include: [
             { model: models.clothing, through: { attributes: [] } },
