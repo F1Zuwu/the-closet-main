@@ -1,31 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Tags from "../components/Tags";
 import { fetchWithAuth } from "../api/Account";
 import ErrorPop from "../components/ErrorPop";
+import AddTag from "../components/AddTag";
 
 const Add = () => {
-
+    const [selectedTagIds, setSelectedTagIds] = useState([]);
     const [isErrorOpen, setErrorIsOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState({})
+    const [isAddTagWindowOpen, setIsTagWindowOpen] = useState(false)
+
+    useEffect(() => {
+        console.log(selectedTagIds)
+    }, [selectedTagIds])
 
     const handleAddOutfit = () => {
         const outfit_name = document.getElementById("outfit-name").value
         const imageData = document.getElementById("outfit-image").value
-        fetchWithAuth("/api/fit/", {method:"POST", body:JSON.stringify({
-            name: outfit_name,
-            image_url: imageData,
-            tag_ids:[16],
-            clothing_ids: [1],
-            accessory_ids: [],
-            user_id: 1
-        })})
-        .then(async (res)=> {
-            const data = await res.json()
-
-            setErrorMessage({message:JSON.stringify(data), title:"Info"})
-            setErrorIsOpen(true)
+        fetchWithAuth("/api/fit/", {
+            method: "POST", body: JSON.stringify({
+                name: outfit_name,
+                image_url: imageData,
+                tag_ids: selectedTagIds,
+                clothing_ids: [1],
+                accessory_ids: [],
+                user_id: 1
+            })
         })
+            .then(async (res) => {
+                const data = await res.json()
+
+                setErrorMessage({ message: JSON.stringify(data), title: "Info" })
+                setErrorIsOpen(true)
+            })
     }
 
     return (
@@ -39,10 +47,10 @@ const Add = () => {
                 <div class="pl-6">
                     <h1 class="font-w-title text-2xl mb-2">Lets add your outfit!</h1>
                     <input id="outfit-name" class="font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="You'r outfits name."></input>
-                    <input  onChange={() => document.getElementById("img").src = document.getElementById("outfit-image").value} id="outfit-image" class="mt-4 font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="You'r outfits image url."></input>
+                    <input onChange={() => document.getElementById("img").src = document.getElementById("outfit-image").value} id="outfit-image" class="mt-4 font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="You'r outfits image url."></input>
                     <h2 class="font-w-medium mt-4 -mb-3">Choose Tags that fit this outfit</h2>
                     <div class="">
-                        <Tags></Tags>
+                        <Tags setIsTagWindowOpen={setIsTagWindowOpen} setSelectedTagIds={setSelectedTagIds}></Tags>
                     </div>
                     <button onClick={() => handleAddOutfit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Continue</h2></button>
                 </div>
@@ -56,6 +64,9 @@ const Add = () => {
 
             {isErrorOpen && (
                 <ErrorPop message={errorMessage} setIsOpen={setErrorIsOpen}></ErrorPop>
+            )}
+            {isAddTagWindowOpen && (
+                <AddTag setIsTagWindowOpen={setIsTagWindowOpen}></AddTag>
             )}
         </div>
     )
