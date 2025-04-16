@@ -9,9 +9,10 @@ const saveToken = (token, userData) => {
 
 const fetchWithAuth = async (url, options = {}) => {
     const token = localStorage.getItem('authToken');
+    console.log(`Bearer ` + token)
     const headers = {
         ...(options.headers || {}),
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ` + token,
         'Content-Type': 'application/json'
     };
     return fetch(DomainUrl + url, {

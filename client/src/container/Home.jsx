@@ -9,14 +9,15 @@ import { fetchWithAuth } from "../api/Account";
 import AddTag from "../components/AddTag";
 
 const Home = () => {
-    const userData = localStorage.getItem("auth")
+    const userData = localStorage.getItem("auth");
     const [isAddTagWindowOpen, setIsTagWindowOpen] = useState(false)
     const [fitsData, setFitsData] = useState([])
 
     useEffect(() => {
         fetchWithAuth("/api/fit/getall").then(async (res) => {
             const data = await res.json()
-            setFitsData(data.fits)
+            console.log(data)
+            setFitsData(Array.isArray(data.fits) ? data.fits : []);
             gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
         })
     }, [])
@@ -56,7 +57,6 @@ const Home = () => {
                         {!userData ? (
                             <h1><button class="underline" onClick={() => window.location.href = "/login"}>Login</button> to start viewing your outfits!</h1>
                         ) : (
-
                             <Masonry
                                 columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }}
                                 gap={16}
@@ -73,7 +73,7 @@ const Home = () => {
                         )}
 
                     </div>
-                    {fitsData.lenght > 0 && (
+                    {fitsData.length > 0 && (
                         <Footer></Footer>
                     )}
                 </div>

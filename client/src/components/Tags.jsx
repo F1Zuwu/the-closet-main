@@ -20,7 +20,7 @@ const Tags = ({ setIsTagWindowOpen, setSelectedTagIds }) => {
         fetchWithAuth("/api/tag/getall").then(async (res) => {
             const data = await res.json()
             if (data.success) {
-                setTags(data.tags)
+                setTags(Array.isArray(data.tags) ? data.tags : []);
             }
         })
     })
