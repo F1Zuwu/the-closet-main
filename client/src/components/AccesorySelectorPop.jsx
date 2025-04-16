@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import gsap from "gsap";
 import { fetchWithAuth } from "../api/Account";
-const ClothingSlectorPop = ({setIsClothingSelectorOpen, setSelectedClothingIds}) => {
+const AccessorySlectorPop = ({setIsAccessorySelectorOpen, setSelectedAccessoryIds}) => {
     useEffect(() => {
         gsap.to(".bg-pop", {backgroundColor:"#000000", opacity:0.2})
 
@@ -14,7 +14,7 @@ const ClothingSlectorPop = ({setIsClothingSelectorOpen, setSelectedClothingIds})
         gsap.to(".bg-pop", {backgroundColor:"#000000", opacity:0})
         gsap.to(".bg-pop-container", {opacity:0, scale:1.1, translateY:50})
         setTimeout(() => {
-            setIsClothingSelectorOpen(false)
+            setIsAccessorySelectorOpen(false)
         }, 350);
        
     }
@@ -22,8 +22,8 @@ const ClothingSlectorPop = ({setIsClothingSelectorOpen, setSelectedClothingIds})
         <div class=" absolute top-0 h-screen w-screen flex items-center justify-center">
             <div class="bg-pop w-screen h-screen absolute top-0">{}</div>
             <div class="bg-pop-container absolute bg-backgroundColor rounded-md p-6 border-black opacity-0 min-w-96">
-                <h1 class="text-center font-w-title">Clothing selector</h1>
-                <p class="text-center font-w-light">Add or select clothing pices that are used in this outfit</p>
+                <h1 class="text-center font-w-title">Accessories selector</h1>
+                <p class="text-center font-w-light">Add or select Accessories that are used in this outfit</p>
                 <div class="bg-TagsBackground mb-2 mt-2 rounded-md">
                   <input placeholder="Clothing name" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                   <input placeholder="image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
@@ -41,4 +41,4 @@ const ClothingSlectorPop = ({setIsClothingSelectorOpen, setSelectedClothingIds})
     )
 }
 
-export default ClothingSlectorPop;
+export default AccessorySlectorPop;

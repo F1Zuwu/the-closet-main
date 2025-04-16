@@ -5,11 +5,16 @@ import { fetchWithAuth } from "../api/Account";
 import ErrorPop from "../components/ErrorPop";
 import AddTag from "../components/AddTag";
 import gsap from "gsap";
+import ClothingSlectorPop from "../components/ClothingSelectorPop";
+import AccessorySlectorPop from "../components/AccesorySelectorPop";
 const Add = () => {
     const [selectedTagIds, setSelectedTagIds] = useState([]);
     const [isErrorOpen, setErrorIsOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState({})
     const [isAddTagWindowOpen, setIsTagWindowOpen] = useState(false)
+
+    const [isClothingSelectorOpen, setIsClothingSelectorOpen] = useState(false)
+    const [isAccessorySelectorOpen, setIsAccessorySelectorOpen] = useState(false)
 
     useEffect(() => {
         console.log(selectedTagIds)
@@ -68,8 +73,8 @@ const Add = () => {
                 <div class="pl-6 secound-panel w-0 opacity-0">
                   <h1 class="cursor-pointer underline" onClick={() => openFirstPanel()}>{"< Back "}</h1>
                   <h1 class="font-w-title text-2xl mb-2">Select components for this outfit</h1>
-                    <button class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h1>Click to open Clothing selector.</h1></button>
-                 <button class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h1>Click to open Accessories selector.</h1></button>
+                    <button onClick={() => setIsClothingSelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5 "><h1>Click to open Clothing selector.</h1></button>
+                 <button onClick={() => setIsAccessorySelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h1>Click to open Accessories selector.</h1></button>
                  <button onClick={() => handleAddOutfit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Add outfit</h2></button>
                 </div>
             </div>
@@ -82,6 +87,12 @@ const Add = () => {
 
             {isErrorOpen && (
                 <ErrorPop message={errorMessage} setIsOpen={setErrorIsOpen}></ErrorPop>
+            )}
+            {isClothingSelectorOpen && (
+                <ClothingSlectorPop setIsClothingSelectorOpen={setIsClothingSelectorOpen}></ClothingSlectorPop>
+            )}
+            {isAccessorySelectorOpen && (
+                <AccessorySlectorPop setIsAccessorySelectorOpen={setIsAccessorySelectorOpen}></AccessorySlectorPop>
             )}
             {isAddTagWindowOpen && (
                 <AddTag setIsTagWindowOpen={setIsTagWindowOpen}></AddTag>
