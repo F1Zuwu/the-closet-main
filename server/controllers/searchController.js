@@ -11,7 +11,7 @@ class searchController extends BaseController {
 
   async searchFits(req, res) {
     this.handleRequest(req, res, async () => {
-      const { search } = req.query;
+      const { search } = req.body;
 
       if (!search) {
         return res.status(400).json({
@@ -48,7 +48,7 @@ class searchController extends BaseController {
 
   async filterFitsByTag(req, res) {
     this.handleRequest(req, res, async () => {
-      const { tag_id } = req.query;
+      const { tag_id } = req.body;
 
       if (!tag_id) {
         return res.status(400).json({
