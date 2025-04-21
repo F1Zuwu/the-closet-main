@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(300),
       allowNull: false,
     },
+    user_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
   },{
     freezeTableName: true, 
@@ -23,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     Accessory.belongsToMany(models.fits, {
       through: "FitAccessories",
       foreignKey: "accessory_id",
+    });
+
+    Accessory.belongsTo(models.users, {
+      foreignKey: "user_id",
     });
   };
 

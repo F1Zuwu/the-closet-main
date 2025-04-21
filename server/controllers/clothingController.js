@@ -7,6 +7,7 @@ class clothingController extends BaseController {
     this.addClothing = this.addClothing.bind(this);
     this.getClothing = this.getClothing.bind(this);
     this.deleteClothing = this.deleteClothing.bind(this);
+    this.getAllClothing = this.getAllClothing.bind(this);
   }
 
   async addClothing(req, res) {
@@ -22,6 +23,7 @@ class clothingController extends BaseController {
         const clothing = await models.clothing.create({
           name,
           image_url,
+          user_id: req.user.id,
         });
         console.log("clothing item:", clothing);
 
@@ -67,6 +69,28 @@ class clothingController extends BaseController {
             },
           });
         }
+      } catch (dbErr) {
+        console.error("Database error occured: ", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "An error has occured in code.",
+          error: dbErr.message,
+        });
+      }
+    });
+  }
+
+  async getAllClothing(req, res) {
+    this.handleRequest(req, res, async () => {
+      try {
+        const userId = req.user.id;
+        const clothing = await models.clothing.findAll({
+          where: { user_id: userId },
+        });
+        return res.status(200).json({
+          success: true,
+          clothing,
+        });
       } catch (dbErr) {
         console.error("Database error occured: ", dbErr);
         return res.status(500).json({

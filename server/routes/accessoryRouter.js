@@ -1,5 +1,6 @@
 const accessoryController = require("../controllers/accessoryController");
 const BaseRouter = require("./BaseRouter");
+const { checkAuthenticated } = require("../middleware/auth");
 
 class accessoryRouter extends BaseRouter {
   constructor() {
@@ -8,9 +9,10 @@ class accessoryRouter extends BaseRouter {
   }
 
   registerRoutes() {
-    this.registerRoute("post", "/accessory", accessoryController.addAccessory);
+    this.registerRoute("post", "/accessory", checkAuthenticated, accessoryController.addAccessory);
     this.registerRoute("get", "/accessory", accessoryController.getAccessory);
-    this.registerRoute("delete", "/accessory", accessoryController.deleteAccessory);
+    this.registerRoute("delete", "/accessory", checkAuthenticated, accessoryController.deleteAccessory);
+    this.registerRoute("get", "/accessory/getAll", checkAuthenticated, accessoryController.getAllAccessories);
   }
 }
 

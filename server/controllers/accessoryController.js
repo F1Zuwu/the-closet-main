@@ -1,4 +1,5 @@
 const { models } = require("../database");
+const accessories = require("../database/models/accessories");
 const BaseController = require("./BaseController");
 
 class accessoryController extends BaseController {
@@ -7,6 +8,7 @@ class accessoryController extends BaseController {
     this.addAccessory = this.addAccessory.bind(this);
     this.getAccessory = this.getAccessory.bind(this);
     this.deleteAccessory = this.deleteAccessory.bind(this);
+    this.getAllAccessories = this.getAllAccessories.bind(this);
   }
 
   async addAccessory(req, res) {
@@ -21,6 +23,7 @@ class accessoryController extends BaseController {
         const accessory = await models.accessory.create({
           name,
           image_url,
+          user_id: req.user.id,
         });
         console.log("accessory:", accessory);
 
@@ -28,6 +31,7 @@ class accessoryController extends BaseController {
           success: true,
           message: "Accessory added",
           accessory: {
+            user_id: req.user.id,
             name: accessory.name,
             image_url: accessory.image_url,
           },
@@ -45,7 +49,7 @@ class accessoryController extends BaseController {
 
   async getAccessory(req, res) {
     this.handleRequest(req, res, async () => {
-      const { accessory_id, name, image_url } = req.body;
+      const { accessory_id, name, image_url, } = req.body;
       try {
         const accessory = await models.accessory.findOne({
           where: { accessory_id },
@@ -76,10 +80,31 @@ class accessoryController extends BaseController {
       }
     });
   }
+  async getAllAccessories(req, res) {
+    this.handleRequest(req, res, async () => {
+      try {
+        const userId = req.user.id;
+        const accessory = await models.accessory.findAll({
+          where: { user_id: userId },
+        });
+        return res.status(200).json({
+          success: true,
+          accessory,
+        });
+      } catch (dbErr) {
+        console.error("Database error occured: ", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "An error has occured in code.",
+          error: dbErr.message,
+        });
+      }
+    });
+  }
 
   async deleteAccessory(req, res) {
     this.handleRequest(req, res, async () => {
-      const { accessory_id } = req.body;
+      const { accessory_id, user_id } = req.body;
       try {
         const accessory = await models.accessory.findOne({
           where: { accessory_id },
