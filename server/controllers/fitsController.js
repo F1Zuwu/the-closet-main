@@ -146,7 +146,7 @@ class fitsController extends BaseController {
           where: { fit_id },
         });
         if (fit) {
-          await models.fit.destroy({
+          await models.fits.destroy({
             where: { fit_id },
           });
         } else {

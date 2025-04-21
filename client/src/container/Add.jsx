@@ -15,10 +15,15 @@ const Add = () => {
 
     const [isClothingSelectorOpen, setIsClothingSelectorOpen] = useState(false)
     const [isAccessorySelectorOpen, setIsAccessorySelectorOpen] = useState(false)
+    const [selectedClothingIds, setSelectedClothingIds] = useState([])
+    const [selectedAccessoryids, setSelectedAccessoryIds] = useState([])
 
     useEffect(() => {
-        console.log(selectedTagIds)
-    }, [selectedTagIds])
+        console.log("DEBUG SELECTED IDS:")
+        console.log("tags", selectedTagIds)
+        console.log("clothing", selectedClothingIds)
+        console.log("accessory", selectedAccessoryids)
+    }, [selectedTagIds, selectedAccessoryids, selectedClothingIds])
 
     const handleAddOutfit = () => {
         const outfit_name = document.getElementById("outfit-name").value
@@ -28,8 +33,8 @@ const Add = () => {
                 name: outfit_name,
                 image_url: imageData,
                 tag_ids: selectedTagIds,
-                clothing_ids: [1],
-                accessory_ids: []
+                clothing_ids: selectedClothingIds,
+                accessory_ids: selectedAccessoryids
             })
         })
             .then(async (res) => {
@@ -72,8 +77,22 @@ const Add = () => {
                 <div class="pl-6 secound-panel w-0 opacity-0">
                     <h1 class="cursor-pointer underline" onClick={() => openFirstPanel()}>{"< Back "}</h1>
                     <h1 class="font-w-title text-2xl mb-2">Select components for this outfit</h1>
-                    <button onClick={() => setIsClothingSelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5 "><h1>Click to open Clothing selector.</h1></button>
-                    <button onClick={() => setIsAccessorySelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h1>Click to open Accessories selector.</h1></button>
+                    <button onClick={() => setIsClothingSelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5 ">
+                        {selectedClothingIds.length === 0 ? (
+                            <h1>Click to open Clothing selector.</h1>
+                        ) : (
+                            <h1>{selectedClothingIds.length} Clothing items selected.</h1>
+                        )
+                        }
+                    </button>
+                    <button onClick={() => setIsAccessorySelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">
+                        {selectedAccessoryids.length === 0 ? (
+                            <h1>Click to open Accessories selector.</h1>
+                        ) : (
+                            <h1>{selectedAccessoryids.length} Accessories selected.</h1>
+                        )
+                        }
+                    </button>
                     <button onClick={() => handleAddOutfit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Add outfit</h2></button>
                 </div>
             </div>
@@ -88,10 +107,10 @@ const Add = () => {
                 <ErrorPop message={errorMessage} setIsOpen={setErrorIsOpen}></ErrorPop>
             )}
             {isClothingSelectorOpen && (
-                <ClothingSlectorPop setIsClothingSelectorOpen={setIsClothingSelectorOpen}></ClothingSlectorPop>
+                <ClothingSlectorPop selectedClothingId={selectedClothingIds} setSelectedClothingIds={setSelectedClothingIds} setIsClothingSelectorOpen={setIsClothingSelectorOpen}></ClothingSlectorPop>
             )}
             {isAccessorySelectorOpen && (
-                <AccessorySlectorPop setIsAccessorySelectorOpen={setIsAccessorySelectorOpen}></AccessorySlectorPop>
+                <AccessorySlectorPop selectedAccessoryid={selectedAccessoryids} setSelectedAccessoryIds={setSelectedAccessoryIds} setIsAccessorySelectorOpen={setIsAccessorySelectorOpen}></AccessorySlectorPop>
             )}
             {isAddTagWindowOpen && (
                 <AddTag setIsTagWindowOpen={setIsTagWindowOpen}></AddTag>

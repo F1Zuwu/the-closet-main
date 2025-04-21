@@ -12,6 +12,7 @@ import Add from './container/Add';
 import Login from './container/Login';
 import Register from './container/Reigster';
 import ViewItem from './container/ViewItem';
+import NotFound from './container/NotFound';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -24,6 +25,9 @@ ReactDOM.render(
             {/* AUTH */}
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+
+            {/* ERR */}
+            <Route path='/*' element={<NotFound />} />
         </Routes>
     </BrowserRouter>,
     document.getElementById('root'),
