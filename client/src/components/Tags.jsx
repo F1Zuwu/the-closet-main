@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { fetchWithAuth } from "../api/Account";
 
-const Tags = ({ setIsTagWindowOpen, setSelectedTagIds }) => {
+const Tags = ({ setIsTagWindowOpen, setSelectedTagIds,isHomePage }) => {
 
     const [tags, setTags] = useState([])
 
@@ -39,12 +39,14 @@ const Tags = ({ setIsTagWindowOpen, setSelectedTagIds }) => {
     }
 
     return (
-        <div class="flex items-center mt-4">
+        <div className={`flex items-center mt-4 flex-wrap ${isHomePage
+                                ? 'w-5/6 justify-center'
+                                : 'w-508'}`}>
             {tags.map((val, index) => {
                 const isSelected = selectedTagIds.includes(val.tag_id);
                 return (
-                    <div class="flex tag-container">
-                        <button onClick={() => toggleTag(val.tag_id)} className={`tag-container-select rounded-md min-w-28 flex justify-center items-center 
+                    <div class="flex tag-container  pr-3 py-1">
+                        <button onClick={() => toggleTag(val.tag_id)} className={`tag-container-select px-1 rounded-md min-w-28 flex justify-center items-center 
     ${isSelected
                                 ? 'bg-primary border-2 border-black'
                                 : 'bg-TagsBackground text-UnSelPrimary hover:text-primary border border-transparent'}`} key={index}>

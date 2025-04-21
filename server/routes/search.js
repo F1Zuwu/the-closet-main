@@ -10,13 +10,13 @@ class searchRouter extends BaseRouter {
 
   registerRoutes() {
     this.registerRoute(
-      "get",
+      "post",
       "/search",
       checkAuthenticated,
       searchController.searchFits
     );
     this.registerRoute(
-      "get",
+      "post",
       "/filter",
       checkAuthenticated,
       searchController.filterFitsByTag
