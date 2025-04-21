@@ -29,8 +29,7 @@ const Add = () => {
                 image_url: imageData,
                 tag_ids: selectedTagIds,
                 clothing_ids: [1],
-                accessory_ids: [],
-                user_id: 1
+                accessory_ids: []
             })
         })
             .then(async (res) => {
@@ -42,13 +41,13 @@ const Add = () => {
     }
 
     const openSlectorPanel = () => {
-        gsap.to(".first-panel", {width:0, opacity:0})
-        gsap.to(".secound-panel", {width:"auto", opacity:1})
+        gsap.to(".first-panel", { width: 0, opacity: 0 })
+        gsap.to(".secound-panel", { width: "auto", opacity: 1 })
     }
 
     const openFirstPanel = () => {
-        gsap.to(".first-panel", {width:"auto", opacity:1})
-        gsap.to(".secound-panel", {width:"0", opacity:0})
+        gsap.to(".first-panel", { width: "auto", opacity: 1 })
+        gsap.to(".secound-panel", { width: "0", opacity: 0 })
     }
 
     return (
@@ -71,11 +70,11 @@ const Add = () => {
                 </div>
 
                 <div class="pl-6 secound-panel w-0 opacity-0">
-                  <h1 class="cursor-pointer underline" onClick={() => openFirstPanel()}>{"< Back "}</h1>
-                  <h1 class="font-w-title text-2xl mb-2">Select components for this outfit</h1>
+                    <h1 class="cursor-pointer underline" onClick={() => openFirstPanel()}>{"< Back "}</h1>
+                    <h1 class="font-w-title text-2xl mb-2">Select components for this outfit</h1>
                     <button onClick={() => setIsClothingSelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5 "><h1>Click to open Clothing selector.</h1></button>
-                 <button onClick={() => setIsAccessorySelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h1>Click to open Accessories selector.</h1></button>
-                 <button onClick={() => handleAddOutfit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Add outfit</h2></button>
+                    <button onClick={() => setIsAccessorySelectorOpen(true)} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h1>Click to open Accessories selector.</h1></button>
+                    <button onClick={() => handleAddOutfit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Add outfit</h2></button>
                 </div>
             </div>
             <img alt="" class="absolute input-pass" src={require('../assets/deco.png')}></img>

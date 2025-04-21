@@ -1,13 +1,13 @@
 require('dotenv').config();
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: 'mysql',
-    logging: false,
-    dialectOptions: {
-      connectTimeout: 60000
-    }
-  });
+const sequelize = new Sequelize('thecloset', 'root', 'qwerty', {
+  host: 'localhost',
+  dialect: 'mysql',
+  logging: false,
+  dialectOptions: {
+    connectTimeout: 60000
+  }
+});
 
 const FitAccessories = require('./models/FitAccessories')(sequelize, Sequelize.DataTypes);
 const FitClothing = require('./models/FitClothing')(sequelize, Sequelize.DataTypes);
