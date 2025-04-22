@@ -106,7 +106,7 @@ class tagController extends BaseController {
           where: { tag_id },
         });
         if (tag) {
-          await models.tags.destroy({
+          await tag.destroy({
             where: { tag_id },
           });
         } else {

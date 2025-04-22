@@ -110,7 +110,7 @@ class clothingController extends BaseController {
           where: { clothing_id },
         });
         if (clothing) {
-          await models.clothing.destroy({
+          await clothing.destroy({
             where: { clothing_id },
           });
         } else {

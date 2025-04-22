@@ -110,7 +110,7 @@ class accessoryController extends BaseController {
           where: { accessory_id },
         });
         if (accessory) {
-          await models.accessory.destroy({
+          await accessory.destroy({
             where: { accessory_id },
           });
         } else {
