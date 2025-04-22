@@ -73,8 +73,10 @@ class searchController extends BaseController {
                 },
                 user_id: userId,
               },
+              required: true,
             },
           ],
+          distinct: true, 
         });
 
         return res.status(200).json({
