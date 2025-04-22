@@ -8,7 +8,7 @@ const Login = () => {
     const [isErrorOpen, setErrorIsOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState({})
 
-    window.addEventListener("DOMContentLoaded" ,() => {
+    window.addEventListener("DOMContentLoaded", () => {
         const username = document.getElementById("name")
         const password = document.getElementById("password")
         username.focus()
@@ -30,7 +30,7 @@ const Login = () => {
                     console.log(res)
                     window.location.href = "/"
                 } else {
-                    setErrorMessage({message:res.error, title:"Failed!"})
+                    setErrorMessage({ message: res.error, title: "Failed!" })
                     setErrorIsOpen(true)
                 }
             })
@@ -41,11 +41,9 @@ const Login = () => {
             <img alt="" class="input-pass absolute" src={require('../assets/deco.png')}></img>
             <img alt="" class="input-pass absolute bottom-0 right-0" src={require('../assets/deco_1.png')}></img>
             <div class="input-pass navbar-gradient">{/* Gradient Decoration */}</div>
-            <div class="w-full absolute">
-                <Navbar></Navbar>
-            </div>
 
-            <div class="flex justify-center items-center h-screen">
+
+            <div class="flex justify-center items-center h-screen w-full absolute">
                 <div>
                     <h1 class="font-w-title text-2xl mb-2">Login</h1>
                     <input id="name" type="name" class="font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="Username"></input>
@@ -54,7 +52,9 @@ const Login = () => {
                     <h1 class="text-center mt-1">Don't have an account yet? <button onClick={() => window.location.href = "/register"} class="underline cursor-pointer">Register</button></h1>
                 </div>
             </div>
-
+            <div class="w-full absolute">
+                <Navbar></Navbar>
+            </div>
             {isErrorOpen && (
                 <ErrorPop message={errorMessage} setIsOpen={setErrorIsOpen}></ErrorPop>
             )}

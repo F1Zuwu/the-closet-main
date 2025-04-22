@@ -57,6 +57,10 @@ const Add = () => {
 
     return (
         <div class="bg-backgroundColor h-screen">
+            <img alt="" class="absolute input-pass" src={require('../assets/deco.png')}></img>
+            <img alt="" class="absolute bottom-0 right-0 input-pass" src={require('../assets/deco_1.png')}></img>
+            <div class="navbar-gradient input-pass">{/* Gradient Decoration */}</div>
+
             <div class="h-full w-full flex items-center justify-center absolute">
                 <div class="relative">
                     <img alt="preview" id="img" class="limit-img rounded-md" src={require("../assets/placeholder.png")}></img>
@@ -96,9 +100,6 @@ const Add = () => {
                     <button onClick={() => handleAddOutfit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Add outfit</h2></button>
                 </div>
             </div>
-            <img alt="" class="absolute input-pass" src={require('../assets/deco.png')}></img>
-            <img alt="" class="absolute bottom-0 right-0 input-pass" src={require('../assets/deco_1.png')}></img>
-            <div class="navbar-gradient">{/* Gradient Decoration */}</div>
             <div class="w-full absolute">
                 <Navbar></Navbar>
             </div>

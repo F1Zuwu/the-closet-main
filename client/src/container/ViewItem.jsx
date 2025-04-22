@@ -51,8 +51,8 @@ const ViewItem = () => {
             <div class="flex items-center h-screen pl-32">
                 <div class="h-1/3 flex">
                     <div class="relative flex items-center justify-center">
-                        <img alt="preview" id="img" class="limit-img rounded-md" src={data.image_url}></img>
-                        <div class="absolute -bottom-16 left-0">
+                        <img alt="preview" id="img" class="rounded-md h-full" src={data.image_url}></img>
+                        <div class="absolute -bottom-20 left-0">
                             <div class="flex">
                                 <h1 class="font-w-title text-2xl">{data.name}</h1>
                                 <button onClick={() => setShareOpen(true)} class="bg-TagsBackground rounded-md flex justify-center items-center ml-3 pl-1.5 pr-1.5 text-UnSelPrimary hover:text-primary" title="Share this outfit!"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ const ViewItem = () => {
                                 </svg></button>
                                 <button onClick={() => deleteFit()} class="bg-TagsBackground rounded-md flex justify-center items-center ml-1.5 pl-1.5 pr-1.5 text-UnSelPrimary hover:bg-rose-500  duration-200" title="Delete this outfit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px">    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" /></svg></button>
                             </div>
-                            <div class="-ml-3 mt-2">
+                            <div class="-ml-3 mt-2 flex tag-container pr-3 py-1">
                                 {tags.map((val, index) => {
                                     return (
                                         <div class="flex ">
