@@ -141,7 +141,7 @@ class accessoryController extends BaseController {
         console.error("Database error occured: ", dbErr);
         return res.status(500).json({
           success: false,
-          message: "Failed to delete the accessory.",
+          message: "Failed to edit the accessory.",
           error: dbErr.message,
         });
       }

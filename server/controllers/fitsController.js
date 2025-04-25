@@ -6,8 +6,10 @@ class fitsController extends BaseController {
     super();
     this.addFit = this.addFit.bind(this);
     this.getFit = this.getFit.bind(this);
-    this.deleteFit = this.deleteFit.bind(this);
     this.getAllFits = this.getAllFits.bind(this);
+    this.editFit = this.editFit.bind(this);
+    this.deleteFit = this.deleteFit.bind(this);
+    
   }
 
   async addFit(req, res) {
@@ -132,6 +134,49 @@ class fitsController extends BaseController {
         return res.status(500).json({
           success: false,
           message: "Something went wrong while getting the fit",
+          error: dbErr.message,
+        });
+      }
+    });
+  }
+
+  async editFit(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { fit_id, name, image_url } = req.body;
+      try {
+        const fit = await models.fits.findOne({
+          where: { fit_id },
+        });
+        if (fit) {
+          await fit.update(
+            {
+              name,
+              image_url,
+              user_id: req.user.id,
+            },
+            {
+              where: { fit_id },
+            }
+          );
+        } else {
+          return res.status(404).json({
+            success: false,
+            message: "Failed find the outfit.",
+          });
+        }
+
+        return res.status(201).json({
+          success: true,
+          fit: {
+            id: fit.fit_id,
+            fit,
+          },
+        });
+      } catch (dbErr) {
+        console.error("Database error occured: ", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "Failed to edit the outfit.",
           error: dbErr.message,
         });
       }

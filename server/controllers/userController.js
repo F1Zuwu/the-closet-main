@@ -9,6 +9,7 @@ class userController extends BaseController {
     super();
     this.Register = this.Register.bind(this);
     this.Login = this.Login.bind(this);
+    this.getSession = this.getSession.bind(this);
   }
 
   generateToken(user) {

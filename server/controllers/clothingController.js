@@ -138,7 +138,7 @@ class clothingController extends BaseController {
         console.error("Database error occured: ", dbErr);
         return res.status(500).json({
           success: false,
-          message: "Failed to delete the clothing item.",
+          message: "Failed to edit the clothing item.",
           error: dbErr.message,
         });
       }
