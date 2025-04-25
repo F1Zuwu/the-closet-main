@@ -14,6 +14,9 @@ class fitsController extends BaseController {
     this.removeAccessoryFromFit = this.removeAccessoryFromFit.bind(this);
 
     this.saveSharedFit = this.saveSharedFit.bind(this);
+
+    this.addClothingToFit = this.addClothingToFit.bind(this);
+    this.addAccessoriesToFit = this.addAccessoriesToFit.bind(this);
   }
 
   async addFit(req, res) {
@@ -310,9 +313,13 @@ class fitsController extends BaseController {
           user_id,
         });
 
-        await newFit.addClothing((fit.clothings || []).map(c => c.clothing_id));
-        await newFit.addTags((fit.tags || []).map(t => t.tag_id));
-        await newFit.addAccessories((fit.accessories || []).map(a => a.accessory_id));        
+        await newFit.addClothing(
+          (fit.clothings || []).map((c) => c.clothing_id)
+        );
+        await newFit.addTags((fit.tags || []).map((t) => t.tag_id));
+        await newFit.addAccessories(
+          (fit.accessories || []).map((a) => a.accessory_id)
+        );
 
         return res.status(201).json({
           success: true,
@@ -325,6 +332,81 @@ class fitsController extends BaseController {
           success: false,
           message: "Could not save fit",
           error: err.message,
+        });
+      }
+    });
+  }
+
+  async addClothingToFit(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { fit_id } = req.params;
+      const { clothing_ids } = req.body;
+
+      try {
+        const fit = await models.fits.findOne({
+          where: { fit_id },
+        });
+
+        if (!fit) {
+          return res.status(404).json({
+            success: false,
+            message: "Fit not found",
+          });
+        }
+
+        await fit.addClothing(clothing_ids);
+
+        console.log("Added clothing IDs:", clothing_ids);
+
+        return res.status(200).json({
+          success: true,
+          message: "Clothing items added to fit successfully",
+          fit,
+          clothing_ids,
+        });
+      } catch (dbErr) {
+        console.error("Database error occurred:", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "Failed to add clothing to fit",
+          error: dbErr.message,
+        });
+      }
+    });
+  }
+
+  async addAccessoriesToFit(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { fit_id } = req.params;
+      const { accessory_ids } = req.body;
+
+      try {
+        const fit = await models.fits.findOne({
+          where: { fit_id },
+        });
+
+        if (!fit) {
+          return res.status(404).json({
+            success: false,
+            message: "Fit not found",
+          });
+        }
+
+        await fit.addAccessory(accessory_ids);
+
+        console.log("Added accessory IDs:", accessory_ids);
+
+        return res.status(200).json({
+          success: true,
+          message: "Accessories added to fit successfully",
+          fit,
+        });
+      } catch (dbErr) {
+        console.error("Database error occurred:", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "Failed to add accessories to fit",
+          error: dbErr.message,
         });
       }
     });
