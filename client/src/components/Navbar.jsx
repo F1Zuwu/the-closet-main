@@ -10,7 +10,7 @@ const Navbar = () => {
         localStorage.clear()
 
         setErrorIsOpen(true)
-        setErrorMessage({message:"Logged out of your current session.", title:"Success!", reloadNeeded:true})
+        setErrorMessage({ message: "Logged out of your current session.", title: "Success!", reloadNeeded: true })
 
         //window.location.href = "/login"
     }
@@ -22,6 +22,11 @@ const Navbar = () => {
                     <path d="M14.8 25.4384L2 31V2H14.8M14.8 25.4384L24 31V2H14.8M14.8 25.4384V2" stroke="#352F2C" stroke-width="3" />
                 </svg>
                 <h1 class="font-w-title ml-2 text-primary">The Closet</h1>
+                {userData && (
+                    <h1 class="ml-1.5"> | {JSON.parse(userData).username}</h1>
+                )
+                }
+
             </button>
 
             <div class="absolute flex right-8 top-4 font-w-medium text-UnSelPrimary">
