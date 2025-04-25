@@ -8,6 +8,7 @@ class clothingController extends BaseController {
     this.getClothing = this.getClothing.bind(this);
     this.editClothing = this.editClothing.bind(this);
     this.deleteClothing = this.deleteClothing.bind(this);
+    this.getAllClothing = this.getAllClothing.bind(this);
   }
 
   async addClothing(req, res) {
