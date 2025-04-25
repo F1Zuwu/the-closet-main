@@ -286,34 +286,34 @@ class fitsController extends BaseController {
     this.handleRequest(req, res, async () => {
       const { fit_id } = req.body;
       const user_id = req.user.id;
-  
+
       try {
         const fit = await models.fits.findOne({
           where: { fit_id },
           include: [
-            { model: models.clothing },
-            { model: models.tags },
-            { model: models.accessory },
+            { model: models.clothing, through: { attributes: [] } },
+            { model: models.tags, through: { attributes: [] } },
+            { model: models.accessory, through: { attributes: [] } },
           ],
         });
-  
+
         if (!fit) {
           return res.status(404).json({
             success: false,
             message: "Fit not found",
           });
         }
-  
+
         const newFit = await models.fits.create({
           name: `${fit.name} (copy)`,
           image_url: fit.image_url,
           user_id,
         });
-  
-        await newFit.addClothing((fit.clothing || []).map((c) => c.clothing_id));
-        await newFit.addTags((fit.tags || []).map((t) => t.tag_id));
-        await newFit.addAccessories((fit.accessory || []).map((a) => a.accessory_id));
-  
+
+        await newFit.addClothing((fit.clothings || []).map(c => c.clothing_id));
+        await newFit.addTags((fit.tags || []).map(t => t.tag_id));
+        await newFit.addAccessories((fit.accessories || []).map(a => a.accessory_id));        
+
         return res.status(201).json({
           success: true,
           message: "Fit copied to your closet!",
@@ -329,6 +329,6 @@ class fitsController extends BaseController {
       }
     });
   }
-}  
+}
 
 module.exports = new fitsController();
