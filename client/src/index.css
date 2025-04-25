@@ -58,10 +58,10 @@ body {
 }
 
 .limit-img {
-    max-height: 255px !important;
+    max-height: 288px !important;
     max-width: 400px !important;
     min-width: 255px !important;
-    min-height: 255px !important;
+    min-height: 288px !important;
     height: 100% !important;
     width: 100% !important;
 }
@@ -76,4 +76,25 @@ body {
     -webkit-transition-duration: 0.2s;
     width: 32px;
     opacity: 1;
+}
+
+.fit-container-atrb:hover .btns-show {
+    -webkit-transition-duration: 0.2s;
+    width: 48px;
+    opacity: 1;
+}
+
+.hover-container-img-prev:hover .hover-icon-show {
+    -webkit-transition-duration: 0.2s;
+    opacity: 1;
+}
+
+.hover-container-img-prev:hover .dark-overlay {
+    -webkit-transition-duration: 0.2s;
+    opacity: 0.3;
+}
+
+.hover-container-img-prev .dark-overlay {
+    -webkit-transition-duration: 0.2s;
+    opacity: 0;
 }
