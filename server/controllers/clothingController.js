@@ -6,8 +6,8 @@ class clothingController extends BaseController {
     super();
     this.addClothing = this.addClothing.bind(this);
     this.getClothing = this.getClothing.bind(this);
+    this.editClothing = this.editClothing.bind(this);
     this.deleteClothing = this.deleteClothing.bind(this);
-    this.getAllClothing = this.getAllClothing.bind(this);
   }
 
   async addClothing(req, res) {
@@ -96,6 +96,49 @@ class clothingController extends BaseController {
         return res.status(500).json({
           success: false,
           message: "An error has occured in code.",
+          error: dbErr.message,
+        });
+      }
+    });
+  }
+
+  async editClothing(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { clothing_id, name, image_url } = req.body;
+      try {
+        const clothing = await models.clothing.findOne({
+          where: { clothing_id },
+        });
+        if (clothing) {
+          await clothing.update(
+            {
+              name,
+              image_url,
+              user_id: req.user.id,
+            },
+            {
+              where: { clothing_id },
+            }
+          );
+        } else {
+          return res.status(404).json({
+            success: false,
+            message: "Failed find the clothing item.",
+          });
+        }
+
+        return res.status(201).json({
+          success: true,
+          clothing: {
+            id: clothing.clothing_id,
+            clothing,
+          },
+        });
+      } catch (dbErr) {
+        console.error("Database error occured: ", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "Failed to delete the clothing item.",
           error: dbErr.message,
         });
       }

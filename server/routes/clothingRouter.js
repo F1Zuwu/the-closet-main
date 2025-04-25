@@ -11,8 +11,9 @@ class clothingRouter extends BaseRouter {
   registerRoutes() {
     this.registerRoute("post", "/clothing", checkAuthenticated, clothingController.addClothing);
     this.registerRoute("get", "/clothing", clothingController.getClothing);
-    this.registerRoute("delete", "/clothing", checkAuthenticated, clothingController.deleteClothing);
     this.registerRoute("get", "/clothing/getAll", checkAuthenticated, clothingController.getAllClothing);
+    this.registerRoute("put", "/clothing", checkAuthenticated, clothingController.editClothing);
+    this.registerRoute("delete", "/clothing", checkAuthenticated, clothingController.deleteClothing);
   }
 }
 

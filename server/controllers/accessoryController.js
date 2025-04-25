@@ -7,8 +7,9 @@ class accessoryController extends BaseController {
     super();
     this.addAccessory = this.addAccessory.bind(this);
     this.getAccessory = this.getAccessory.bind(this);
-    this.deleteAccessory = this.deleteAccessory.bind(this);
     this.getAllAccessories = this.getAllAccessories.bind(this);
+    this.editAccessory = this.editAccessory.bind(this);
+    this.deleteAccessory = this.deleteAccessory.bind(this);
   }
 
   async addAccessory(req, res) {
@@ -34,6 +35,7 @@ class accessoryController extends BaseController {
             user_id: req.user.id,
             name: accessory.name,
             image_url: accessory.image_url,
+            accessory_id: accessory.accessory_id,
           },
         });
       } catch (dbErr) {
@@ -49,7 +51,7 @@ class accessoryController extends BaseController {
 
   async getAccessory(req, res) {
     this.handleRequest(req, res, async () => {
-      const { accessory_id, name, image_url, } = req.body;
+      const { accessory_id, name, image_url } = req.body;
       try {
         const accessory = await models.accessory.findOne({
           where: { accessory_id },
@@ -80,6 +82,7 @@ class accessoryController extends BaseController {
       }
     });
   }
+
   async getAllAccessories(req, res) {
     this.handleRequest(req, res, async () => {
       try {
@@ -96,6 +99,49 @@ class accessoryController extends BaseController {
         return res.status(500).json({
           success: false,
           message: "An error has occured in code.",
+          error: dbErr.message,
+        });
+      }
+    });
+  }
+
+  async editAccessory(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { accessory_id, name, image_url } = req.body;
+      try {
+        const accessory = await models.accessory.findOne({
+          where: { accessory_id },
+        });
+        if (accessory) {
+          await accessory.update(
+            {
+              name,
+              image_url,
+              user_id: req.user.id,
+            },
+            {
+              where: { accessory_id },
+            }
+          );
+        } else {
+          return res.status(404).json({
+            success: false,
+            message: "Failed find the accessory.",
+          });
+        }
+
+        return res.status(201).json({
+          success: true,
+          accessory: {
+            id: accessory.accessory_id,
+            accessory,
+          },
+        });
+      } catch (dbErr) {
+        console.error("Database error occured: ", dbErr);
+        return res.status(500).json({
+          success: false,
+          message: "Failed to delete the accessory.",
           error: dbErr.message,
         });
       }
