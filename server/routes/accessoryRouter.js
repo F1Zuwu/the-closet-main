@@ -11,8 +11,9 @@ class accessoryRouter extends BaseRouter {
   registerRoutes() {
     this.registerRoute("post", "/accessory", checkAuthenticated, accessoryController.addAccessory);
     this.registerRoute("get", "/accessory", accessoryController.getAccessory);
-    this.registerRoute("delete", "/accessory", checkAuthenticated, accessoryController.deleteAccessory);
     this.registerRoute("get", "/accessory/getAll", checkAuthenticated, accessoryController.getAllAccessories);
+    this.registerRoute("delete", "/accessory", checkAuthenticated, accessoryController.deleteAccessory);
+    this.registerRoute("put", "/accessory", checkAuthenticated, accessoryController.editAccessory);
   }
 }
 
