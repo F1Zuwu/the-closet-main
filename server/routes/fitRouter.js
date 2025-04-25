@@ -12,7 +12,9 @@ class fitRouter extends BaseRouter {
     this.registerRoute("post", "/fit", checkAuthenticated, fitsController.addFit);
     this.registerRoute("get", "/fit/getAll", checkAuthenticated, fitsController.getAllFits);
     this.registerRoute("get", "/fit/:fit_id", fitsController.getFit);
+    this.registerRoute("put", "/fit", checkAuthenticated, fitsController.editFit);
     this.registerRoute("delete", "/fit", checkAuthenticated, fitsController.deleteFit);
+
   }
 }
 
