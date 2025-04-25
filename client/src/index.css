@@ -84,6 +84,12 @@ body {
     opacity: 1;
 }
 
+.fit-container-atrb .btns-show {
+    -webkit-transition-duration: 0.2s;
+    width: 0px;
+    opacity: 0;
+}
+
 .hover-container-img-prev:hover .hover-icon-show {
     -webkit-transition-duration: 0.2s;
     opacity: 1;

@@ -39,9 +39,10 @@ const Add = () => {
         })
             .then(async (res) => {
                 const data = await res.json()
-
-                setErrorMessage({ message: JSON.stringify(data), title: "Info" })
-                setErrorIsOpen(true)
+                if (data.success) { window.location.href = "/outfit/" + data.fit.fit_id } else {
+                    setErrorMessage({ message: data.message, title: "Error" })
+                    setErrorIsOpen(true)
+                }
             })
     }
 

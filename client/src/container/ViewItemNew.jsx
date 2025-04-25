@@ -4,14 +4,31 @@ import Navbar from "../components/Navbar";
 import { fetchWithAuth } from "../api/Account";
 import SharePop from "../components/SharePop";
 import '../scrollbar_viewitem.css'
+import ErrorPop from "../components/ErrorPop";
+import EditPop from "../components/EditPop";
 const ViewItemNew = () => {
-    const [isShareOpen, setShareOpen] = useState(false)
     const { id } = useParams()
+
+    //SHAREPOP
+    const [isShareOpen, setShareOpen] = useState(false)
+
+    //DATA
     const [data, setData] = useState({})
     const [tags, setTags] = useState([])
     const [clothing, setClothing] = useState([])
     const [accessory, setAccesory] = useState([])
+
+    // IS OWNER VALUE TO DISPLAY CORRECT ITEMS
     const [isOwner, setIsOwner] = useState(false)
+
+    //ERROR HANDLEING
+    const [isErrorOpen, setErrorIsOpen] = useState(false)
+    const [errorMessage, setErrorMessage] = useState({})
+
+    //EDITPOP
+    const [isEditOpen, setIsEditOpen] = useState(false)
+    const [editType, setEditType] = useState(0)
+    const [defaultValues, setDefaultValues] = useState({})
 
     window.addEventListener("DOMContentLoaded", () => {
         fetchWithAuth("/api/sessions")
@@ -37,6 +54,19 @@ const ViewItemNew = () => {
 
     })
 
+    const CopyFit = () => {
+        fetchWithAuth("/api/fit/save", { method: "POST", body: JSON.stringify({ fit_id: id }) })
+            .then(async (res) => {
+                const data = await res.json()
+                if (data.success) {
+                    window.location.href = "/outfit/" + data.fit.fit_id
+                } else {
+                    setErrorIsOpen(true)
+                    setErrorMessage({ title: "Error!", message: data.message })
+                }
+            })
+    }
+
 
     const deleteFit = () => {
         fetchWithAuth("/api/fit", { method: "DELETE", body: JSON.stringify({ "fit_id": data.fit_id }) })
@@ -45,10 +75,40 @@ const ViewItemNew = () => {
                 if (data.success) {
                     window.location.href = "/"
                 } else {
-                    alert(data.error)
+                    setErrorIsOpen(true)
+                    setErrorMessage({ title: "Error!", message: data.message })
                 }
             })
     }
+
+    const removeClothing = (cloth_id) => {
+        fetchWithAuth(`/api/fit/${id}/clothing/${cloth_id}`, { method: "DELETE" })
+            .then(async (res) => {
+                const data = await res.json()
+                if (data.success) { window.location.reload() } else {
+                    setErrorIsOpen(true)
+                    setErrorMessage({ title: "Error!", message: data.message })
+                }
+            })
+    }
+
+    const removeAcessory = (acessory_id) => {
+        fetchWithAuth(`/api/fit/${id}/accessory/${acessory_id}`, { method: "DELETE" })
+            .then(async (res) => {
+                const data = await res.json()
+                if (data.success) { window.location.reload() } else {
+                    setErrorIsOpen(true)
+                    setErrorMessage({ title: "Error!", message: data.message })
+                }
+            })
+    }
+
+    const handleEdit = (editType, defaultValues) => {
+        setEditType(editType)
+        setDefaultValues(defaultValues)
+        setIsEditOpen(true)
+    }
+
     return (
         <div class="bg-backgroundColor h-screen">
             <img alt="" class="absolute input-pass" src={require('../assets/deco.png')}></img>
@@ -64,7 +124,7 @@ const ViewItemNew = () => {
                             </svg></button>
                             {isOwner && (
                                 <div class="flex">
-                                    <button onClick={() => deleteFit()} class="bg-TagsBackground rounded-md flex justify-center items-center ml-1.5 pl-1.5 pr-1.5 text-UnSelPrimary" title="Edit this outfit"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
+                                    <button onClick={() => handleEdit(0, { name: data.name, image_url: data.image_url, id: data.fit_id })} class="bg-TagsBackground rounded-md flex justify-center items-center ml-1.5 pl-1.5 pr-1.5 text-UnSelPrimary" title="Edit this outfit"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
                                         <path d="M14.3 5.7L3 17 3 21 7 21 18.3 9.7zM21.7 6.2l-2 2-3.9-3.9 2-2c.3-.4.9-.4 1.3-.1l1.3 1.3 1.3 1.3C22.1 5.3 22.1 5.9 21.7 6.2z"></path>
                                     </svg></button>
                                     <button onClick={() => deleteFit()} class="bg-TagsBackground rounded-md flex justify-center items-center ml-1.5 pl-1.5 pr-1.5 text-UnSelPrimary hover:bg-rose-500  duration-200" title="Delete this outfit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px">    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" /></svg></button>
@@ -83,13 +143,13 @@ const ViewItemNew = () => {
                             })}
                         </div>
                         {tags.length === 0 && (
-                            <h1 class="items-center font-w-light mb-3">This outfit has no tags</h1>
+                            <h1 class="items-center font-w-light mb-3 -mt-5">This outfit has no tags</h1>
                         )}
                         <div>
                         </div>
                         <div class="flex">
-                            <div class="items-center flex justify-center hover-container-img-prev cursor-pointer" onClick={() => window.location.href = data.image_url}>
-                                <div class="dark-overlay bg-black h-72 w-64 rounded-md absolute opacity-0">{ }</div>
+                            <div class="items-center flex justify-center hover-container-img-prev cursor-pointer relative" onClick={() => window.location.href = data.image_url}>
+                                <div class="dark-overlay bg-black h-72 w-full rounded-md absolute opacity-0">{ }</div>
                                 <img alt="preview" id="img" class="limit-img rounded-md" src={data.image_url}></img>
 
                                 <svg class="absolute hover-icon-show opacity-0" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="100" viewBox="0,0,256,256">
@@ -113,16 +173,16 @@ const ViewItemNew = () => {
                                             {clothing.map((value, key) => {
                                                 return (
                                                     <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
-                                                        <img class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                                        <img alt="" class="w-12 h-12 rounded-md" src={value.image_url}></img>
                                                         <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                                         {isOwner && (
                                                             <div class="absolute right-0 flex">
-                                                                <button class="btns-show w-0 opacity-0 bg-backgroundColor h-12 flex justify-center items-center hover:bg-TagsBackground">
+                                                                <button onClick={() => handleEdit(1, { name: value.name, image_url: value.image_url, id: value.clothing_id })} title="Edit name or image." class="btns-show w-0 opacity-0 bg-backgroundColor h-12 flex justify-center items-center hover:bg-TagsBackground">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
                                                                         <path d="M14.3 5.7L3 17 3 21 7 21 18.3 9.7zM21.7 6.2l-2 2-3.9-3.9 2-2c.3-.4.9-.4 1.3-.1l1.3 1.3 1.3 1.3C22.1 5.3 22.1 5.9 21.7 6.2z"></path>
                                                                     </svg>
                                                                 </button>
-                                                                <button class="btns-show w-0 opacity-0 h-12  flex justify-center items-center hover:bg-TagsBackground">
+                                                                <button onClick={() => removeClothing(value.clothing_id)} title="Remove from this fit." class="btns-show w-0 opacity-0 h-12  flex justify-center items-center hover:bg-TagsBackground">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px">    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" /></svg>
                                                                 </button>
 
@@ -148,17 +208,17 @@ const ViewItemNew = () => {
 
                                             {accessory.map((value, key) => {
                                                 return (
-                                                    <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer`}>
-                                                        <img class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                                    <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
+                                                        <img alt="" class="w-12 h-12 rounded-md" src={value.image_url}></img>
                                                         <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                                         {isOwner && (
                                                             <div class="absolute right-0 flex">
-                                                                <button class="btns-show w-0 opacity-0 bg-backgroundColor h-12 flex justify-center items-center hover:bg-TagsBackground">
+                                                                <button onClick={() => handleEdit(2, { name: value.name, image_url: value.image_url, id: value.acessory_id })} class="btns-show w-0 opacity-0 bg-backgroundColor h-12 flex justify-center items-center hover:bg-TagsBackground">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
                                                                         <path d="M14.3 5.7L3 17 3 21 7 21 18.3 9.7zM21.7 6.2l-2 2-3.9-3.9 2-2c.3-.4.9-.4 1.3-.1l1.3 1.3 1.3 1.3C22.1 5.3 22.1 5.9 21.7 6.2z"></path>
                                                                     </svg>
                                                                 </button>
-                                                                <button class="btns-show w-0 opacity-0 h-12  flex justify-center items-center hover:bg-TagsBackground">
+                                                                <button onClick={() => removeAcessory(value.accessory_id)} title="Remove from this fit." class="btns-show w-0 opacity-0 h-12  flex justify-center items-center hover:bg-TagsBackground">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px">    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" /></svg>
                                                                 </button>
                                                             </div>
@@ -177,7 +237,7 @@ const ViewItemNew = () => {
                 {!isOwner && (
                     <div class="absolute bottom-24">
                         <h1 class="text-center">Want this fit in your closet?</h1>
-                        <button class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Copy fit!</button>
+                        <button onClick={() => CopyFit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Copy fit!</button>
                     </div>
                 )}
             </div>
@@ -185,8 +245,15 @@ const ViewItemNew = () => {
             <div class="w-full absolute">
                 <Navbar></Navbar>
             </div>
+
             {isShareOpen && (
                 <SharePop setIsOpen={setShareOpen}></SharePop>
+            )}
+            {isErrorOpen && (
+                <ErrorPop message={errorMessage} setIsOpen={setErrorIsOpen}></ErrorPop>
+            )}
+            {isEditOpen && (
+                <EditPop setIsEditOpen={setIsEditOpen} editType={editType} defaultValues={defaultValues}></EditPop>
             )}
         </div>
     )

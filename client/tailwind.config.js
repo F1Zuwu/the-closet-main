@@ -47,6 +47,7 @@ module.exports = {
             backgroundColor: {
                 backgroundColor: '#F5EBE0',
                 TagsBackground: '#E3D5CA',
+                btnOnTagsBg: '#e8dcd3',
                 FooterColor: '#D6CCC2'
             },
             outlineColor: {},

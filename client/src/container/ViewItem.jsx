@@ -91,7 +91,7 @@ const ViewItem = () => {
                                     {clothing.map((value, key) => {
                                         return (
                                             <div key={key} className={`flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer`}>
-                                                <img class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                                <img alt="" class="w-12 h-12 rounded-md" src={value.image_url}></img>
                                                 <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                             </div>
                                         )
@@ -114,7 +114,7 @@ const ViewItem = () => {
                                     {accessory.map((value, key) => {
                                         return (
                                             <div key={key} className={`flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer`}>
-                                                <img class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                                <img alt="" class="w-12 h-12 rounded-md" src={value.image_url}></img>
                                                 <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                             </div>
                                         )
