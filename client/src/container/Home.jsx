@@ -20,12 +20,22 @@ const Home = () => {
     const [selectedTagIds, setSelectedTagIds] = useState([])
 
     useEffect(() => {
-        fetchWithAuth("/api/fit/getall").then(async (res) => {
-            const data = await res.json()
-            console.log(data)
-            setFitsData(Array.isArray(data.fits) ? data.fits : []);
-            gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
-        })
+        fetchWithAuth("/api/sessions")
+            .then(async (res_) => {
+                const data_ = await res_.json()
+                if (data_.success) {
+                    fetchWithAuth("/api/fit/getall").then(async (res) => {
+                        const data = await res.json()
+                        console.log(data)
+                        setFitsData(Array.isArray(data.fits) ? data.fits : []);
+                        gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
+
+                    })
+                } else {
+                    setErrorIsOpen(true)
+                    setErrorMessage({ "title": "Invalid session", "message": "Your session has timed out please log in again!" })
+                }
+            })
 
         const search = document.getElementById("search-bar")
         search.addEventListener("keydown", (e) => {
@@ -47,10 +57,10 @@ const Home = () => {
         }
 
         fetchWithAuth("/api/filter", { "method": "POST", body: JSON.stringify({ "tag_id": selectedTagIds }) })
-        .then(async(res) => {
-            const data = await res.json()
-            setFitsData(data.fits)
-        })
+            .then(async (res) => {
+                const data = await res.json()
+                setFitsData(data.fits)
+            })
     }, [selectedTagIds])
 
     const HandleTransistion = (val) => {
@@ -65,24 +75,24 @@ const Home = () => {
     const searchByName = () => {
         const search = document.getElementById("search-bar").value
 
-        if(search !== "") {
-        gsap.to(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 })
-        setIsSearching(true)
-        setQuery(`Search results for "${search}"`)
-        fetchWithAuth("/api/search", { "method": "POST", body: JSON.stringify({ "search": search }) })
-            .then(async (res) => {
-                const data = await res.json()
-                if (data.success) {
-                    setFitsData(data.fits)
-                    gsap.to(".container-closet", { opacity: 1, scale: 1, translateY: 0 })
-                    if (data.fits.length === 0) {
-                        setQuery(`No results for "${search}"`)
+        if (search !== "") {
+            gsap.to(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 })
+            setIsSearching(true)
+            setQuery(`Search results for "${search}"`)
+            fetchWithAuth("/api/search", { "method": "POST", body: JSON.stringify({ "search": search }) })
+                .then(async (res) => {
+                    const data = await res.json()
+                    if (data.success) {
+                        setFitsData(data.fits)
+                        gsap.to(".container-closet", { opacity: 1, scale: 1, translateY: 0 })
+                        if (data.fits.length === 0) {
+                            setQuery(`No results for "${search}"`)
+                        }
+                    } else {
+                        setErrorIsOpen(true)
+                        setErrorMessage({ "title": "Error", "message": data.error })
                     }
-                } else {
-                    setErrorIsOpen(true)
-                    setErrorMessage({ "title": "Error", "message": data.error })
-                }
-            })
+                })
         } else {
             window.location.reload()
         }

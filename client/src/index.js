@@ -11,7 +11,7 @@ import Home from './container/Home';
 import Add from './container/Add';
 import Login from './container/Login';
 import Register from './container/Reigster';
-import ViewItem from './container/ViewItem';
+import ViewItem from './container/ViewItemNew';
 import NotFound from './container/NotFound';
 
 ReactDOM.render(
