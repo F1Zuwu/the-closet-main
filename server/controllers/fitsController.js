@@ -9,7 +9,11 @@ class fitsController extends BaseController {
     this.getAllFits = this.getAllFits.bind(this);
     this.editFit = this.editFit.bind(this);
     this.deleteFit = this.deleteFit.bind(this);
-    
+
+    this.removeClothingFromFit = this.removeClothingFromFit.bind(this);
+    this.removeAccessoryFromFit = this.removeAccessoryFromFit.bind(this);
+
+    this.saveSharedFit = this.saveSharedFit.bind(this);
   }
 
   async addFit(req, res) {
@@ -217,6 +221,114 @@ class fitsController extends BaseController {
       }
     });
   }
-}
+
+  async removeClothingFromFit(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { fit_id, clothing_id } = req.params;
+
+      try {
+        const fit = await models.fits.findByPk(fit_id);
+        if (!fit) {
+          return res.status(404).json({
+            success: false,
+            message: "Fit not found",
+          });
+        }
+
+        await fit.removeClothing(clothing_id);
+
+        return res.status(200).json({
+          success: true,
+          message: "Clothing removed from fit",
+        });
+      } catch (err) {
+        console.error("Error removing clothing from fit:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Could not remove clothing",
+          error: err.message,
+        });
+      }
+    });
+  }
+
+  async removeAccessoryFromFit(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { fit_id, accessory_id } = req.params;
+
+      try {
+        const fit = await models.fits.findByPk(fit_id);
+        if (!fit) {
+          return res.status(404).json({
+            success: false,
+            message: "Fit not found",
+          });
+        }
+
+        await fit.removeAccessory(accessory_id);
+
+        return res.status(200).json({
+          success: true,
+          message: "Accessory removed from fit",
+        });
+      } catch (err) {
+        console.error("Error removing accessory from fit:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Could not remove accessory",
+          error: err.message,
+        });
+      }
+    });
+  }
+
+  async saveSharedFit(req, res) {
+    this.handleRequest(req, res, async () => {
+      const { fit_id } = req.body;
+      const user_id = req.user.id;
+  
+      try {
+        const fit = await models.fits.findOne({
+          where: { fit_id },
+          include: [
+            { model: models.clothing },
+            { model: models.tags },
+            { model: models.accessory },
+          ],
+        });
+  
+        if (!fit) {
+          return res.status(404).json({
+            success: false,
+            message: "Fit not found",
+          });
+        }
+  
+        const newFit = await models.fits.create({
+          name: `${fit.name} (copy)`,
+          image_url: fit.image_url,
+          user_id,
+        });
+  
+        await newFit.addClothing((fit.clothing || []).map((c) => c.clothing_id));
+        await newFit.addTags((fit.tags || []).map((t) => t.tag_id));
+        await newFit.addAccessories((fit.accessory || []).map((a) => a.accessory_id));
+  
+        return res.status(201).json({
+          success: true,
+          message: "Fit copied to your closet!",
+          fit: newFit,
+        });
+      } catch (err) {
+        console.error("Error saving shared fit:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Could not save fit",
+          error: err.message,
+        });
+      }
+    });
+  }
+}  
 
 module.exports = new fitsController();

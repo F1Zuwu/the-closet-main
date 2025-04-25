@@ -15,6 +15,10 @@ class fitRouter extends BaseRouter {
     this.registerRoute("put", "/fit", checkAuthenticated, fitsController.editFit);
     this.registerRoute("delete", "/fit", checkAuthenticated, fitsController.deleteFit);
 
+    this.registerRoute("delete", "/fit/:fit_id/clothing/:clothing_id", checkAuthenticated, fitsController.removeClothingFromFit);
+    this.registerRoute("delete", "/fit/:fit_id/accessory/:accessory_id", checkAuthenticated, fitsController.removeAccessoryFromFit);
+    
+    this.registerRoute("post", "/fit/save", checkAuthenticated, fitsController.saveSharedFit);
   }
 }
 
