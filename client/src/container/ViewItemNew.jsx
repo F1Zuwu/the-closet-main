@@ -6,6 +6,7 @@ import SharePop from "../components/SharePop";
 import '../scrollbar_viewitem.css'
 import ErrorPop from "../components/ErrorPop";
 import EditPop from "../components/EditPop";
+import gsap from "gsap";
 const ViewItemNew = () => {
     const { id } = useParams()
 
@@ -42,10 +43,17 @@ const ViewItemNew = () => {
                             setTags(data.fit.tags)
                             setClothing(data.fit.clothings)
                             setAccesory(data.fit.accessories)
-
-                            if (data_.user.id === data.fit.user_id) {
-                                setIsOwner(true)
+                            if (data_.success) {
+                                if (data_.user.id === data.fit.user_id) {
+                                    setIsOwner(true)
+                                }
                             }
+                            gsap.to(".copyfit-container", { opacity: 1, y: 0, scale: 1 })
+                            gsap.to(".data-obj-anim-1", { opacity: 1 })
+                            gsap.to(".data-obj-anim-2", { opacity: 1, delay: 0.1 })
+                            gsap.to(".data-obj-anim-3", { opacity: 1, scale: 1.0, translateY: 0, delay: 0.2 })
+                            gsap.to(".data-obj-anim-4", { opacity: 1, scale: 1.0, translateY: 0, delay: 0.3 })
+                            gsap.to(".data-obj-anim-5", { opacity: 1, scale: 1.0, translateY: 0, delay: 0.4 })
                         } else {
                             window.location.href = "/notfound"
                         }
@@ -117,7 +125,7 @@ const ViewItemNew = () => {
             <div class="absolute w-screen h-screen items-center flex justify-center">
                 <div class="">
                     <div>
-                        <div class="flex">
+                        <div class="flex data-obj-anim-1 opacity-0">
                             <h1 class="font-w-title text-2xl">{data.name}</h1>
                             <button onClick={() => setShareOpen(true)} class="bg-TagsBackground rounded-md flex justify-center items-center ml-3 pl-1.5 pr-1.5 text-UnSelPrimary hover:text-primary" title="Share this outfit!"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
                                 <path d="M19 22H5c-1.654 0-3-1.346-3-3V8h2v11c0 .552.449 1 1 1h14c.552 0 1-.448 1-1v-2h2v2C22 20.654 20.654 22 19 22zM16.707 11.707L15.293 10.293 18.586 7 15.293 3.707 16.707 2.293 21.414 7z"></path><path d="M8,18H6v-1c0-6.065,4.935-11,11-11h3v2h-3c-4.963,0-9,4.037-9,9V18z"></path>
@@ -131,7 +139,7 @@ const ViewItemNew = () => {
                                 </div>
                             )}
                         </div>
-                        <div class="-ml-3 mt-2 flex tag-container pr-3 py-1 mb-3">
+                        <div class="-ml-3 mt-2 flex tag-container pr-3 py-1 mb-3 data-obj-anim-2 opacity-0">
                             {tags.map((val, index) => {
                                 return (
                                     <div class="flex ">
@@ -143,12 +151,12 @@ const ViewItemNew = () => {
                             })}
                         </div>
                         {tags.length === 0 && (
-                            <h1 class="items-center font-w-light mb-3 -mt-5">This outfit has no tags</h1>
+                            <h1 class="items-center font-w-light mb-3 -mt-5 data-obj-anim-2 opacity-0">This outfit has no tags</h1>
                         )}
                         <div>
                         </div>
-                        <div class="flex">
-                            <div class="items-center flex justify-center hover-container-img-prev cursor-pointer relative" onClick={() => window.location.href = data.image_url}>
+                        <div class="flex ">
+                            <div class=" data-obj-anim-3 items-center flex justify-center hover-container-img-prev cursor-pointer relative opacity-0 scale-110 translate-y-12" onClick={() => window.location.href = data.image_url}>
                                 <div class="dark-overlay bg-black h-72 w-full rounded-md absolute opacity-0">{ }</div>
                                 <img alt="preview" id="img" class="limit-img rounded-md" src={data.image_url}></img>
 
@@ -158,18 +166,25 @@ const ViewItemNew = () => {
 
 
                             </div>
-                            <div class="bg-TagsBackground rounded-md min-w-80 h-72 pl-4 pr-8 ml-8 mr-8 pt-4 overflow-y-scroll">
+                            <div class="bg-TagsBackground rounded-md min-w-80 h-72 pl-4 pr-8 ml-8 mr-8 pt-4 overflow-y-scroll data-obj-anim-4 opacity-0 scale-110 translate-y-12">
 
                                 {
                                     clothing.length === 0 ? (
                                         <div class="w-full h-full flex items-center justify-center">
                                             <h1>No clothing components added.</h1>
+                                            <button>Add</button>
                                         </div>
 
                                     ) : (
-                                        <div>
+                                        <div class="relative">
                                             <h1 class="font-w-title text-2xl mb-2">Clothing</h1>
-
+                                            {isOwner && (
+                                                <div class="absolute -right-4 top-0">
+                                                    <button title="Add clothing" class="bg-btnOnTagsBg rounded-md p-0.5">
+                                                        <img class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
+                                                    </button>
+                                                </div>
+                                            )}
                                             {clothing.map((value, key) => {
                                                 return (
                                                     <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
@@ -196,16 +211,22 @@ const ViewItemNew = () => {
                                 }
 
                             </div>
-                            <div class="bg-TagsBackground rounded-md min-w-80 pl-4 pr-8 mr-8 pt-4 overflow-y-scroll">
+                            <div class="bg-TagsBackground rounded-md min-w-80 pl-4 pr-8 mr-8 pt-4 overflow-y-scroll data-obj-anim-5 opacity-0 scale-110 translate-y-12">
                                 {
                                     accessory.length === 0 ? (
                                         <div class="w-full h-full flex items-center justify-center">
                                             <h1 class="font-w-light">No accessory components added.</h1>
                                         </div>
                                     ) : (
-                                        <div>
+                                        <div class="relative">
                                             <h1 class="font-w-title text-2xl mb-2">Accessories</h1>
-
+                                            {isOwner && (
+                                                <div class="absolute -right-4 top-0">
+                                                    <button title="Add clothing" class="bg-btnOnTagsBg rounded-md p-0.5">
+                                                        <img class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
+                                                    </button>
+                                                </div>
+                                            )}
                                             {accessory.map((value, key) => {
                                                 return (
                                                     <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
@@ -235,9 +256,9 @@ const ViewItemNew = () => {
 
                 </div>
                 {!isOwner && (
-                    <div class="absolute bottom-24">
+                    <div class="copyfit-container min-w-80 absolute bottom-24 bg-TagsBackground p-4 rounded-md -translate-y-24 opacity-0 scale-110">
                         <h1 class="text-center">Want this fit in your closet?</h1>
-                        <button onClick={() => CopyFit()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Copy fit!</button>
+                        <button onClick={() => CopyFit()} class="bg-lightBtn rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><img class="w-4 h-4 mr-1" src={require("../assets/icons8-copy-64.png")}></img><h1>Copy</h1></button>
                     </div>
                 )}
             </div>

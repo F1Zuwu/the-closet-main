@@ -20,22 +20,13 @@ const Home = () => {
     const [selectedTagIds, setSelectedTagIds] = useState([])
 
     useEffect(() => {
-        fetchWithAuth("/api/sessions")
-            .then(async (res_) => {
-                const data_ = await res_.json()
-                if (data_.success) {
-                    fetchWithAuth("/api/fit/getall").then(async (res) => {
-                        const data = await res.json()
-                        console.log(data)
-                        setFitsData(Array.isArray(data.fits) ? data.fits : []);
-                        gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
+        fetchWithAuth("/api/fit/getall").then(async (res) => {
+            const data = await res.json()
+            console.log(data)
+            setFitsData(Array.isArray(data.fits) ? data.fits : []);
+            gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
 
-                    })
-                } else {
-                    setErrorIsOpen(true)
-                    setErrorMessage({ "title": "Invalid session", "message": "Your session has timed out please log in again!" })
-                }
-            })
+        })
 
         const search = document.getElementById("search-bar")
         search.addEventListener("keydown", (e) => {

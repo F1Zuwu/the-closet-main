@@ -29,7 +29,7 @@ const Footer = () => {
                     </div>
 
                 </div>
-                <button title="Back on top" class="bg-btnOnTagsBg rounded-md h-12 w-12 absolute right-8 top-8 flex items-center justify-center">
+                <button onClick={() => window.scrollTo(0, 0)} title="Back on top" class="bg-btnOnTagsBg rounded-md h-12 w-12 absolute right-8 top-8 flex items-center justify-center">
                     <img class="h-8 w-8" src={require("../assets/icons8-arrow-up-48.png")}></img>
                 </button>
             </div>
@@ -64,7 +64,7 @@ const Footer = () => {
 
                 </div>
                 <button title="Back on top" class="shadow-md bg-btnOnTagsBg rounded-md h-12 w-12 absolute right-8 top-8 flex items-center justify-center">
-                    <img class="h-8 w-8" src={require("../assets/icons8-arrow-up-48.png")}></img>
+                    <img onClick={() => window.scrollTo(0, 0)} class="h-8 w-8" src={require("../assets/icons8-arrow-up-48.png")}></img>
                 </button>
             </div>
         )
