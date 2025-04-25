@@ -44,6 +44,8 @@ const ClothingSlectorPop = ({ setIsClothingSelectorOpen, setSelectedClothingIds,
                 if (data.success) {
                     fetchWithAuth("/api/clothing/getAll").then(async (res) => {
                         const data = await res.json()
+                        document.getElementById("clothing-name-input").value = ""
+                        document.getElementById("clothing-img-input").value = ""
                         if (data.clothing.length === 0) {
                             document.getElementById("loader").innerHTML = "No clothing components found."
                         } else {
@@ -87,7 +89,7 @@ const ClothingSlectorPop = ({ setIsClothingSelectorOpen, setSelectedClothingIds,
                 <p class="text-center font-w-light">Add or select clothing pices that are used in this outfit</p>
                 <div class="bg-TagsBackground mb-2 mt-2 rounded-md">
                     <input id="clothing-name-input" placeholder="Clothing name" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
-                    <input id="clothing-img-input" placeholder="image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
+                    <input id="clothing-img-input" placeholder="Image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                     <button onClick={() => addClothing()} class="bg-black rounded-b-lg w-full flex justify-center bg-opacity-10 items-center text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Add!</button>
                 </div>
                 <div class="w-full bg-TagsBackground rounded-md p-4">
@@ -100,7 +102,7 @@ const ClothingSlectorPop = ({ setIsClothingSelectorOpen, setSelectedClothingIds,
                                     <h1 class="font-w-title pl-1.5">{value.name}</h1>
 
                                 </div>
-                                <button class=" hover:bg-rose-500 rounded-md h-12 w-12 duration-200 flex justify-center items-center" onClick={() => deleteClothing(value.clothing_id)}>
+                                <button class="-mt-1.5 hover:bg-rose-500 rounded-md h-12 w-12 duration-200 flex justify-center items-center" onClick={() => deleteClothing(value.clothing_id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px">    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" /></svg>
                                 </button>
                             </div>

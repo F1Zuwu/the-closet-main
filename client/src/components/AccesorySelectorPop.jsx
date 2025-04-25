@@ -13,7 +13,7 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
         fetchWithAuth("/api/accessory/getAll").then(async (res) => {
             const data = await res.json()
             if (data.accessory.length === 0) {
-                document.getElementById("loader").innerHTML = "No clothing components found."
+                document.getElementById("loader").innerHTML = "No accessory components found."
             } else {
                 setAccesoryData(data.accessory)
                 if (selectedAccessoryid.length !== 0) {
@@ -44,7 +44,7 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
                     fetchWithAuth("/api/accessory/getAll").then(async (res) => {
                         const data = await res.json()
                         if (data.accessory.length === 0) {
-                            document.getElementById("loader").innerHTML = "No clothing components found."
+                            document.getElementById("loader").innerHTML = "No accessory components found."
                         } else {
                             setAccesoryData(data.accessory)
                             document.getElementById("loader").style.display = "none"
@@ -62,6 +62,21 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
         }, 350);
 
     }
+
+    const deleteAcessory = (id) => {
+        fetchWithAuth("/api/accessory", { "method": "DELETE", body: JSON.stringify({ "accessory_id": id }) })
+            .then(async (res) => {
+                const data = await res.json()
+                if (data.success) {
+                    fetchWithAuth("/api/clothing/getAll").then(async (res) => {
+                        const data = await res.json()
+                        setAccesoryData(data.clothing)
+                    })
+                } else {
+                    alert(data.message)
+                }
+            })
+    }
     return (
         <div class=" absolute top-0 h-screen w-screen flex items-center justify-center">
             <div class="bg-pop w-screen h-screen absolute top-0">{ }</div>
@@ -73,14 +88,20 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
                     <input id="accessory-img-input" placeholder="image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                     <button onClick={() => addAccessory()} class="bg-black rounded-b-lg w-full flex justify-center bg-opacity-10 items-center text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Add!</button>
                 </div>
-                <div class="w-full bg-TagsBackground rounded-md">
+                <div class="w-full bg-TagsBackground rounded-md p-4">
 
                     {accesoryData.map((value, key) => {
                         const isSelected = selectedAccesoryIds.includes(value.accessory_id);
                         return (
-                            <div key={key} onClick={() => toggleTag(value.accessory_id)} className={`flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer ${isSelected ? 'bg-primary border-t-2 border-r-2 border-b-2 border-black bg-backgroundColor' : ''}`}>
-                                <img class="w-12 h-12 rounded-md" src={value.image_url}></img>
-                                <h1 class="font-w-title pl-1.5">{value.name}</h1>
+                            <div class="flex items-center w-full">
+                                <div key={key} onClick={() => toggleTag(value.accessory_id)} className={`w-full relative flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer ${isSelected ? 'bg-primary border-t-2 border-r-2 border-b-2 border-black bg-backgroundColor' : ''}`}>
+                                    <img class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                    <h1 class="font-w-title pl-1.5">{value.name}</h1>
+                                </div>
+                                <button class="-mt-1.5 hover:bg-rose-500 rounded-md h-12 w-12 duration-200 flex justify-center items-center" onClick={() => deleteAcessory(value.accessory_id)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px">    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" /></svg>
+                                </button>
+
                             </div>
                         )
                     })}
