@@ -135,12 +135,10 @@ const Home = () => {
                         )}
 
                     </div>
-                    {fitsData.length > 0 && (
-                        <Footer></Footer>
-                    )}
                 </div>
 
             </div>
+            <Footer></Footer>
             {fitsData.length === 0 && (
                 <div class="absolute bottom-0 w-full">
                     <Footer></Footer>

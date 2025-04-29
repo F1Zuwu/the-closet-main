@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { fetchWithAuth } from "../api/Account";
@@ -6,7 +6,10 @@ import SharePop from "../components/SharePop";
 import '../scrollbar_viewitem.css'
 import ErrorPop from "../components/ErrorPop";
 import EditPop from "../components/EditPop";
+import AccessorySlectorPop from "../components/AccesorySelectorPop";
+import ClothingSlectorPop from "../components/ClothingSelectorPop";
 import gsap from "gsap";
+
 const ViewItemNew = () => {
     const { id } = useParams()
 
@@ -30,6 +33,12 @@ const ViewItemNew = () => {
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [editType, setEditType] = useState(0)
     const [defaultValues, setDefaultValues] = useState({})
+
+    // ADD CLOTHING + ACESS
+    const [isClothingSelectorOpen, setIsClothingSelectorOpen] = useState(false)
+    const [isAccessorySelectorOpen, setIsAccessorySelectorOpen] = useState(false)
+    const [selectedClothingIds, setSelectedClothingIds] = useState([])
+    const [selectedAccessoryids, setSelectedAccessoryIds] = useState([])
 
     window.addEventListener("DOMContentLoaded", () => {
         fetchWithAuth("/api/sessions")
@@ -117,6 +126,46 @@ const ViewItemNew = () => {
         setIsEditOpen(true)
     }
 
+    useEffect(() => {
+        console.log(selectedAccessoryids, selectedClothingIds)
+        console.log("lenght", selectedAccessoryids.length, selectedClothingIds.length)
+
+        if (selectedClothingIds.length === 0) { } else {
+            fetchWithAuth(`/api/fit/${id}/addClothing`, { method: "POST", body: JSON.stringify({ clothing_ids: selectedClothingIds }) })
+                .then(async (res) => {
+                    const data = await res.json()
+                    if (data.success) {
+                        fetchWithAuth("/api/fit/" + id)
+                            .then(async (res) => {
+                                const data = await res.json()
+                                if (data.success) {
+                                    setClothing(data.fit.clothings)
+                                }
+                            })
+                    }
+                })
+        }
+
+        if (selectedAccessoryids.length === 0) { } else {
+            fetchWithAuth(`/api/fit/${id}/addAccessory`, { method: "POST", body: JSON.stringify({ accessory_ids: selectedAccessoryids }) })
+                .then(async (res) => {
+                    const data = await res.json()
+                    if (data.success) {
+                        fetchWithAuth("/api/fit/" + id)
+                            .then(async (res) => {
+                                const data = await res.json()
+                                if (data.success) {
+                                    setAccesory(data.fit.accessories)
+                                }
+                            })
+                    }
+                })
+        }
+
+
+
+    }, [selectedClothingIds, selectedAccessoryids])
+
     return (
         <div class="bg-backgroundColor h-screen">
             <img alt="" class="absolute input-pass" src={require('../assets/deco.png')}></img>
@@ -171,8 +220,11 @@ const ViewItemNew = () => {
                                 {
                                     clothing.length === 0 ? (
                                         <div class="w-full h-full flex items-center justify-center">
-                                            <h1>No clothing components added.</h1>
-                                            <button>Add</button>
+                                            <div>
+                                                <h1>No clothing components added.</h1>
+                                                <button class="w-full"><h1 class="underline text-center" onClick={() => setIsClothingSelectorOpen(true)}>Add</h1></button>
+                                            </div>
+
                                         </div>
 
                                     ) : (
@@ -181,14 +233,14 @@ const ViewItemNew = () => {
                                             {isOwner && (
                                                 <div class="absolute -right-4 top-0">
                                                     <button title="Add clothing" class="bg-btnOnTagsBg rounded-md p-0.5">
-                                                        <img class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
+                                                        <img onClick={() => setIsClothingSelectorOpen(true)} class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
                                                     </button>
                                                 </div>
                                             )}
                                             {clothing.map((value, key) => {
                                                 return (
                                                     <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
-                                                        <img alt="" class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                                        <img alt="" class="w-12 h-12 rounded-md bg-cover" src={value.image_url}></img>
                                                         <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                                         {isOwner && (
                                                             <div class="absolute right-0 flex">
@@ -215,7 +267,10 @@ const ViewItemNew = () => {
                                 {
                                     accessory.length === 0 ? (
                                         <div class="w-full h-full flex items-center justify-center">
-                                            <h1 class="font-w-light">No accessory components added.</h1>
+                                            <div>
+                                                <h1 class="font-w-light" >No accessory components added.</h1>
+                                                <button class="w-full" onClick={() => setIsAccessorySelectorOpen(true)}><h1 class="underline text-center">Add</h1></button>
+                                            </div>
                                         </div>
                                     ) : (
                                         <div class="relative">
@@ -223,7 +278,7 @@ const ViewItemNew = () => {
                                             {isOwner && (
                                                 <div class="absolute -right-4 top-0">
                                                     <button title="Add clothing" class="bg-btnOnTagsBg rounded-md p-0.5">
-                                                        <img class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
+                                                        <img onClick={() => setIsAccessorySelectorOpen(true)} class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
                                                     </button>
                                                 </div>
                                             )}
@@ -275,6 +330,12 @@ const ViewItemNew = () => {
             )}
             {isEditOpen && (
                 <EditPop setIsEditOpen={setIsEditOpen} editType={editType} defaultValues={defaultValues}></EditPop>
+            )}
+            {isClothingSelectorOpen && (
+                <ClothingSlectorPop selectedClothingId={selectedClothingIds} setSelectedClothingIds={setSelectedClothingIds} setIsClothingSelectorOpen={setIsClothingSelectorOpen}></ClothingSlectorPop>
+            )}
+            {isAccessorySelectorOpen && (
+                <AccessorySlectorPop selectedAccessoryid={selectedAccessoryids} setSelectedAccessoryIds={setSelectedAccessoryIds} setIsAccessorySelectorOpen={setIsAccessorySelectorOpen}></AccessorySlectorPop>
             )}
         </div>
     )

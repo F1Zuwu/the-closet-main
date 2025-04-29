@@ -24,9 +24,7 @@ const AddTag = ({ setIsTagWindowOpen }) => {
             if (data.success) {
                 gsap.to(".bg-pop", { backgroundColor: "#000000", opacity: 0.0 })
                 gsap.to(".bg-pop-container", { opacity: 0, scale: 1.1, translateY: 50 })
-                setTimeout(() => {
-                    window.location.reload()
-                }, 300);
+                setIsTagWindowOpen(false)
             } else {
                 alert(data.message)
             }

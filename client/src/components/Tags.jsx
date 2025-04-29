@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchWithAuth } from "../api/Account";
 
-const Tags = ({ setIsTagWindowOpen, setSelectedTagIds,isHomePage }) => {
+const Tags = ({ isAddTagWindowOpen, setIsTagWindowOpen, setSelectedTagIds, isHomePage }) => {
 
     const [tags, setTags] = useState([])
 
@@ -16,14 +16,24 @@ const Tags = ({ setIsTagWindowOpen, setSelectedTagIds,isHomePage }) => {
         );
     };
 
-    window.addEventListener("DOMContentLoaded", () => {
+    const fetchData = () => {
         fetchWithAuth("/api/tag/getall").then(async (res) => {
             const data = await res.json()
             if (data.success) {
                 setTags(Array.isArray(data.tags) ? data.tags : []);
             }
         })
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        fetchData()
     })
+
+    useEffect(() => {
+        if (isAddTagWindowOpen === false) {
+            fetchData()
+        }
+    }, [isAddTagWindowOpen])
 
     const deleteTag = (id) => {
         console.log(id)
@@ -40,8 +50,8 @@ const Tags = ({ setIsTagWindowOpen, setSelectedTagIds,isHomePage }) => {
 
     return (
         <div className={`flex items-center mt-4 flex-wrap ${isHomePage
-                                ? 'w-5/6 justify-center'
-                                : 'w-508'}`}>
+            ? 'w-5/6 justify-center'
+            : 'w-508'}`}>
             {tags.map((val, index) => {
                 const isSelected = selectedTagIds.includes(val.tag_id);
                 return (

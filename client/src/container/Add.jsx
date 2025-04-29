@@ -56,6 +56,7 @@ const Add = () => {
         gsap.to(".secound-panel", { width: "0", opacity: 0 })
     }
 
+
     return (
         <div class="bg-backgroundColor h-screen">
             <img alt="" class="absolute input-pass" src={require('../assets/deco.png')}></img>
@@ -65,7 +66,6 @@ const Add = () => {
             <div class="h-full w-full flex items-center justify-center absolute">
                 <div class="relative">
                     <img alt="preview" id="img" class="limit-img rounded-md" src={require("../assets/placeholder.png")}></img>
-                    <div class="w-full flex justify-center"><h2 class="font-w-light text-sm">Optimal image size is 1024x1024 (px)</h2></div>
                 </div>
 
                 <div class="pl-6 first-panel">
@@ -74,7 +74,7 @@ const Add = () => {
                     <input onChange={() => document.getElementById("img").src = document.getElementById("outfit-image").value} id="outfit-image" class="mt-4 font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="You'r outfits image url."></input>
                     <h2 class="font-w-medium mt-4 -mb-3">Choose Tags that fit this outfit</h2>
                     <div class="">
-                        <Tags setIsTagWindowOpen={setIsTagWindowOpen} setSelectedTagIds={setSelectedTagIds}></Tags>
+                        <Tags isAddTagWindowOpen={isAddTagWindowOpen} setIsTagWindowOpen={setIsTagWindowOpen} setSelectedTagIds={setSelectedTagIds}></Tags>
                     </div>
                     <button onClick={() => openSlectorPanel()} class="bg-TagsBackground rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Continue</h2></button>
                 </div>
