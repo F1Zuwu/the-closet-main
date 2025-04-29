@@ -1,6 +1,7 @@
 const { models } = require("../database");
 const BaseController = require("./BaseController");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -23,11 +24,13 @@ class userController extends BaseController {
   async Register(req, res) {
     this.handleRequest(req, res, async () => {
       const { username, email, password } = req.body;
+
       if (!username || !email || !password) {
         return res
           .status(400)
-          .json({ success: false, error: "fields can not be empty!!!" });
+          .json({ success: false, error: "Fields cannot be empty!" });
       }
+
       if (!emailRegex.test(email)) {
         return res
           .status(400)
@@ -35,27 +38,28 @@ class userController extends BaseController {
       }
 
       try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const user = await models.users.create({
           username,
           email,
-          password,
+          password: hashedPassword,
         });
 
         const token = this.generateToken(user);
-        console.log(user);
 
         return res.status(201).json({
           success: true,
           message: "User created and logged in.",
           token,
           user: {
-            id: user.id,
+            id: user.user_id,
             username: user.username,
             email: user.email,
           },
         });
       } catch (dbErr) {
-        console.error("Database error occured: ", dbErr);
+        console.error("Database error occurred: ", dbErr);
         return res.status(500).json({
           success: false,
           message: "Failed to create user.",
@@ -68,37 +72,44 @@ class userController extends BaseController {
   async Login(req, res) {
     this.handleRequest(req, res, async () => {
       const { username, password } = req.body;
+
       if (!username || !password) {
         return res
           .status(400)
-          .json({ success: false, error: "fields can not be empty!!!" });
+          .json({ success: false, error: "Fields cannot be empty!" });
       }
-      try {
-        const user = await models.users.findOne({
-          where: { username },
-        });
 
-        if (!user || user.password !== password) {
+      try {
+        const user = await models.users.findOne({ where: { username } });
+
+        if (!user) {
+          return res
+            .status(401)
+            .json({ success: false, error: "Invalid credentials" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
           return res
             .status(401)
             .json({ success: false, error: "Invalid credentials" });
         }
 
         const token = this.generateToken(user);
-        console.log(user);
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           message: "User logged in.",
           token,
           user: {
-            id: user.id,
+            id: user.user_id,
             username: user.username,
             email: user.email,
           },
         });
       } catch (dbErr) {
-        console.error("Database error occured: ", dbErr);
+        console.error("Database error occurred: ", dbErr);
         return res.status(500).json({
           success: false,
           message: "Failed to login user.",
