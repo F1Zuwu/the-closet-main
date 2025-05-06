@@ -7,4 +7,5 @@
 cd ./client
 npm i
 npm start
+```
 <h3>Server</h3>
