@@ -18,3 +18,7 @@ npm i
 node ./database/sync.js
 node ./index.js
 ```
+
+<h2>Süsteemi Arhitektuur</h2>
+
+![image](https://github.com/user-attachments/assets/d63884ec-e2af-4b0c-9e4b-20e2aff29dee)
