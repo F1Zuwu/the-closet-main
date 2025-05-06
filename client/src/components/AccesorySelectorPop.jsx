@@ -43,6 +43,8 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
                 if (data.success) {
                     fetchWithAuth("/api/accessory/getAll").then(async (res) => {
                         const data = await res.json()
+                        document.getElementById("accessory-name-input").value = ""
+                        document.getElementById("accessory-img-input").value = ""
                         if (data.accessory.length === 0) {
                             document.getElementById("loader").innerHTML = "No accessory components found."
                         } else {
@@ -88,7 +90,7 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
                     <input id="accessory-img-input" placeholder="image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                     <button onClick={() => addAccessory()} class="bg-black rounded-b-lg w-full flex justify-center bg-opacity-10 items-center text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Add!</button>
                 </div>
-                <div class="w-full bg-TagsBackground rounded-md p-4">
+                <div class="w-full bg-TagsBackground rounded-md p-4 overflow-y-scroll h-96">
 
                     {accesoryData.map((value, key) => {
                         const isSelected = selectedAccesoryIds.includes(value.accessory_id);

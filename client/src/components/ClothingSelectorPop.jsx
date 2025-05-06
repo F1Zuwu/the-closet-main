@@ -92,7 +92,7 @@ const ClothingSlectorPop = ({ setIsClothingSelectorOpen, setSelectedClothingIds,
                     <input id="clothing-img-input" placeholder="Image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                     <button onClick={() => addClothing()} class="bg-black rounded-b-lg w-full flex justify-center bg-opacity-10 items-center text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Add!</button>
                 </div>
-                <div class="w-full bg-TagsBackground rounded-md p-4">
+                <div class="w-full bg-TagsBackground rounded-md p-4 overflow-y-scroll h-96">
                     {clothingData.map((value, key) => {
                         const isSelected = selectedClothingIds.includes(value.clothing_id);
                         return (
