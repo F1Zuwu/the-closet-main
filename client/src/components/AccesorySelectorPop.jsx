@@ -70,9 +70,10 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
             .then(async (res) => {
                 const data = await res.json()
                 if (data.success) {
-                    fetchWithAuth("/api/clothing/getAll").then(async (res) => {
+                    fetchWithAuth("/api/accessory/getAll").then(async (res) => {
                         const data = await res.json()
-                        setAccesoryData(data.clothing)
+                        console.log(data)
+                        setAccesoryData(data.accessory)
                     })
                 } else {
                     alert(data.message)

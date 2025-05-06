@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { registerUser } from "../api/Account";
 import ErrorPop from "../components/ErrorPop";
@@ -6,8 +7,9 @@ import ErrorPop from "../components/ErrorPop";
 const Register = () => {
     const [isErrorOpen, setErrorIsOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState({})
+    const navigate = useNavigate();
 
-    window.addEventListener("DOMContentLoaded", () => {
+    useEffect(() => {
         const username = document.getElementById("name")
         const passwordCheck = document.getElementById("passwordCheck")
         username.focus()
@@ -17,7 +19,8 @@ const Register = () => {
                 RegisterUser()
             }
         })
-    })
+        // eslint-disable-next-line
+    }, [])
 
     const RegisterUser = () => {
         const email = document.getElementById("email").value
@@ -29,7 +32,7 @@ const Register = () => {
             registerUser(username, email, password)
                 .then((res) => {
                     if (res.success === true) {
-                        window.location.href = "/"
+                        navigate("/")
                     } else {
                         setErrorMessage({ message: res.error, title: "Failed!" })
                         setErrorIsOpen(true)
@@ -56,7 +59,7 @@ const Register = () => {
                     <input id="password" type="password" class="mt-2 font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="Password"></input>
                     <input id="passwordCheck" type="password" class="mt-2 font-w-light w-full h-12 bg-transparent border-black text-primary border pl-4 rounded-full" placeholder="Type your password again"></input>
                     <button onClick={() => RegisterUser()} class="bg-TagsBackground rounded-full w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><h2 class="font-w-medium">Register</h2></button>
-                    <h1 class="text-center mt-1">Alerady have an account? <button onClick={() => window.location.href = "/login"} class="underline cursor-pointer">Log in!</button></h1>
+                    <h1 class="text-center mt-1">Alerady have an account? <button onClick={() => navigate("/login")} class="underline cursor-pointer">Log in!</button></h1>
                 </div>
             </div><div class="w-full absolute">
                 <Navbar></Navbar>

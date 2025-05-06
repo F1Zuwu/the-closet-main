@@ -7,6 +7,8 @@ const Tags = ({ isAddTagWindowOpen, setIsTagWindowOpen, setSelectedTagIds, isHom
 
     const [selectedTagIds, setSelectedTagId] = useState([])
 
+    const userData = localStorage.getItem("auth");
+
     const toggleTag = (tag_id) => {
         setSelectedTagIds(prev =>
             prev.includes(tag_id) ? prev.filter(id => id !== tag_id) : [...prev, tag_id]
@@ -25,9 +27,12 @@ const Tags = ({ isAddTagWindowOpen, setIsTagWindowOpen, setSelectedTagIds, isHom
         })
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-        fetchData()
-    })
+    useEffect(() => {
+        if (userData) {
+            fetchData()
+        }
+        // eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
         if (isAddTagWindowOpen === false) {

@@ -7,7 +7,10 @@ import AddTag from "../components/AddTag";
 import gsap from "gsap";
 import ClothingSlectorPop from "../components/ClothingSelectorPop";
 import AccessorySlectorPop from "../components/AccesorySelectorPop";
+import { useNavigate } from "react-router-dom";
 const Add = () => {
+    const navigate = useNavigate();
+
     const [selectedTagIds, setSelectedTagIds] = useState([]);
     const [isErrorOpen, setErrorIsOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState({})
@@ -39,7 +42,7 @@ const Add = () => {
         })
             .then(async (res) => {
                 const data = await res.json()
-                if (data.success) { window.location.href = "/outfit/" + data.fit.fit_id } else {
+                if (data.success) { navigate("/outfit/" + data.fit.fit_id) } else {
                     setErrorMessage({ message: data.message, title: "Error" })
                     setErrorIsOpen(true)
                 }

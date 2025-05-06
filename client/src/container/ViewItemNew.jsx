@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { fetchWithAuth } from "../api/Account";
 import SharePop from "../components/SharePop";
@@ -12,6 +12,8 @@ import gsap from "gsap";
 
 const ViewItemNew = () => {
     const { id } = useParams()
+
+    const navigate = useNavigate();
 
     //SHAREPOP
     const [isShareOpen, setShareOpen] = useState(false)
@@ -40,7 +42,7 @@ const ViewItemNew = () => {
     const [selectedClothingIds, setSelectedClothingIds] = useState([])
     const [selectedAccessoryids, setSelectedAccessoryIds] = useState([])
 
-    window.addEventListener("DOMContentLoaded", () => {
+    useEffect(() => {
         fetchWithAuth("/api/sessions")
             .then(async (res_) => {
                 const data_ = await res_.json()
@@ -64,19 +66,19 @@ const ViewItemNew = () => {
                             gsap.to(".data-obj-anim-4", { opacity: 1, scale: 1.0, translateY: 0, delay: 0.3 })
                             gsap.to(".data-obj-anim-5", { opacity: 1, scale: 1.0, translateY: 0, delay: 0.4 })
                         } else {
-                            window.location.href = "/notfound"
+                            navigate("/notfound")
                         }
                     })
             })
-
-    })
+        // eslint-disable-next-line
+    }, [])
 
     const CopyFit = () => {
         fetchWithAuth("/api/fit/save", { method: "POST", body: JSON.stringify({ fit_id: id }) })
             .then(async (res) => {
                 const data = await res.json()
                 if (data.success) {
-                    window.location.href = "/outfit/" + data.fit.fit_id
+                    navigate("/outfit/" + data.fit.fit_id)
                 } else {
                     setErrorIsOpen(true)
                     setErrorMessage({ title: "Error!", message: data.message })
@@ -90,7 +92,7 @@ const ViewItemNew = () => {
             .then(async (res) => {
                 const data = await res.json()
                 if (data.success) {
-                    window.location.href = "/"
+                    navigate("/")
                 } else {
                     setErrorIsOpen(true)
                     setErrorMessage({ title: "Error!", message: data.message })
@@ -127,8 +129,6 @@ const ViewItemNew = () => {
     }
 
     useEffect(() => {
-        console.log(selectedAccessoryids, selectedClothingIds)
-        console.log("lenght", selectedAccessoryids.length, selectedClothingIds.length)
 
         if (selectedClothingIds.length === 0) { } else {
             fetchWithAuth(`/api/fit/${id}/addClothing`, { method: "POST", body: JSON.stringify({ clothing_ids: selectedClothingIds }) })
@@ -163,7 +163,7 @@ const ViewItemNew = () => {
         }
 
 
-
+        // eslint-disable-next-line
     }, [selectedClothingIds, selectedAccessoryids])
 
     return (
@@ -233,14 +233,14 @@ const ViewItemNew = () => {
                                             {isOwner && (
                                                 <div class="absolute -right-4 top-0">
                                                     <button title="Add clothing" class="bg-btnOnTagsBg rounded-md p-0.5">
-                                                        <img onClick={() => setIsClothingSelectorOpen(true)} class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
+                                                        <img alt="add clothing button icon" onClick={() => setIsClothingSelectorOpen(true)} class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
                                                     </button>
                                                 </div>
                                             )}
                                             {clothing.map((value, key) => {
                                                 return (
                                                     <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
-                                                        <img alt="" class="w-12 h-12 rounded-md bg-cover" src={value.image_url}></img>
+                                                        <img alt="" class="w-12 h-12 rounded-md object-cover" src={value.image_url}></img>
                                                         <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                                         {isOwner && (
                                                             <div class="absolute right-0 flex">
@@ -277,15 +277,15 @@ const ViewItemNew = () => {
                                             <h1 class="font-w-title text-2xl mb-2">Accessories</h1>
                                             {isOwner && (
                                                 <div class="absolute -right-4 top-0">
-                                                    <button title="Add clothing" class="bg-btnOnTagsBg rounded-md p-0.5">
-                                                        <img onClick={() => setIsAccessorySelectorOpen(true)} class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
+                                                    <button title="Add Accessories" class="bg-btnOnTagsBg rounded-md p-0.5">
+                                                        <img alt="add Accessories" onClick={() => setIsAccessorySelectorOpen(true)} class="h-7 w-7" src={require("../assets/icons8-add-50.png")}></img>
                                                     </button>
                                                 </div>
                                             )}
                                             {accessory.map((value, key) => {
                                                 return (
                                                     <div key={key} className={`fit-container-atrb flex h-12 items-center mb-2 rounded-md hover:bg-backgroundColor duration-100 cursor-pointer relative`}>
-                                                        <img alt="" class="w-12 h-12 rounded-md" src={value.image_url}></img>
+                                                        <img alt="" class="w-12 h-12 rounded-md  object-cover" src={value.image_url}></img>
                                                         <h1 class="font-w-medium pl-1.5">{value.name}</h1>
                                                         {isOwner && (
                                                             <div class="absolute right-0 flex">
@@ -313,7 +313,7 @@ const ViewItemNew = () => {
                 {!isOwner && (
                     <div class="copyfit-container min-w-80 absolute bottom-24 bg-TagsBackground p-4 rounded-md -translate-y-24 opacity-0 scale-110">
                         <h1 class="text-center">Want this fit in your closet?</h1>
-                        <button onClick={() => CopyFit()} class="bg-lightBtn rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><img class="w-4 h-4 mr-1" src={require("../assets/icons8-copy-64.png")}></img><h1>Copy</h1></button>
+                        <button onClick={() => CopyFit()} class="bg-lightBtn rounded-md w-full flex justify-center items-center mt-4 text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5"><img alt="copy-icon" class="w-4 h-4 mr-1" src={require("../assets/icons8-copy-64.png")}></img><h1>Copy</h1></button>
                     </div>
                 )}
             </div>

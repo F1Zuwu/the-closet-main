@@ -8,9 +8,13 @@ import gsap from "gsap";
 import { fetchWithAuth } from "../api/Account";
 import AddTag from "../components/AddTag";
 import ErrorPop from "../components/ErrorPop";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const userData = localStorage.getItem("auth");
+
+    const navigate = useNavigate();
+
     const [isAddTagWindowOpen, setIsTagWindowOpen] = useState(false)
     const [fitsData, setFitsData] = useState([])
     const [isErrorOpen, setErrorIsOpen] = useState(false)
@@ -19,14 +23,18 @@ const Home = () => {
     const [query, setQuery] = useState("")
     const [selectedTagIds, setSelectedTagIds] = useState([])
 
-    useEffect(() => {
-        fetchWithAuth("/api/fit/getall").then(async (res) => {
-            const data = await res.json()
-            console.log(data)
-            setFitsData(Array.isArray(data.fits) ? data.fits : []);
-            gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
 
-        })
+    useEffect(() => {
+        if (userData) {
+            fetchWithAuth("/api/fit/getall").then(async (res) => {
+                const data = await res.json()
+                //console.log(data)
+                setFitsData(Array.isArray(data.fits) ? data.fits : []);
+                gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
+            })
+        } else {
+            gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
+        }
 
         const search = document.getElementById("search-bar")
         search.addEventListener("keydown", (e) => {
@@ -34,16 +42,20 @@ const Home = () => {
                 searchByName()
             }
         })
+        // added cause userData will not be added here
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
         console.log(selectedTagIds)
         if (selectedTagIds.length === 0) {
-            fetchWithAuth("/api/fit/getall").then(async (res) => {
-                const data = await res.json()
-                setFitsData(Array.isArray(data.fits) ? data.fits : []);
-                gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
-            })
+            if (userData) {
+                fetchWithAuth("/api/fit/getall").then(async (res) => {
+                    const data = await res.json()
+                    setFitsData(Array.isArray(data.fits) ? data.fits : []);
+                    gsap.fromTo(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 }, { opacity: 1, scale: 1.0, translateY: 0 })
+                })
+            }
             return;
         }
 
@@ -52,13 +64,16 @@ const Home = () => {
                 const data = await res.json()
                 setFitsData(data.fits)
             })
+
+        // added cause userData will not be added here
+        // eslint-disable-next-line
     }, [selectedTagIds])
 
     const HandleTransistion = (val) => {
         gsap.to(".container-closet", { opacity: 0, scale: 1.1, translateY: 50 })
 
         setTimeout(() => {
-            window.location.href = "/outfit/" + val
+            navigate("/outfit/" + val)
         }, 350);
 
     }
@@ -89,10 +104,12 @@ const Home = () => {
         }
     }
 
+
+
     return (
         <div class="bg-backgroundColor h-screen">
-            <img alt="" class="input-pass absolute" src={require('../assets/deco.png')}></img>
-            <img alt="" class="input-pass absolute bottom-0 right-0" src={require('../assets/deco_1.png')}></img>
+            <img alt="" class="deco input-pass absolute overflow-hidden" src={require('../assets/deco.png')}></img>
+            <img alt="" class="deco2 input-pass absolute bottom-0 right-0 overflow-hidden" src={require('../assets/deco_1.png')}></img>
             <div class="navbar-gradient">{/* Gradient Decoration */}</div>
 
 
@@ -114,10 +131,10 @@ const Home = () => {
                     <div id="container-fits-" class="flex justify-center pt-12 pl-24 pr-24 pb-24 container-closet opacity-0 overflow-x-hidden">
 
                         {fitsData.length === 0 && userData && !isSearching && (
-                            <h1><button class="underline" onClick={() => window.location.href = "/add"}>Add</button> fits to your collection to start viewing them!</h1>
+                            <h1><button class="underline" onClick={() => navigate("/add")}>Add</button> fits to your collection to start viewing them!</h1>
                         )}
                         {!userData ? (
-                            <h1><button class="underline" onClick={() => window.location.href = "/login"}>Login</button> to start viewing your outfits!</h1>
+                            <h1><button class="underline" onClick={() => navigate("/login")}>Login</button> to start viewing your outfits!</h1>
                         ) : (
                             <Masonry
                                 columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }}
