@@ -51,7 +51,7 @@ class accessoryController extends BaseController {
 
   async getAccessory(req, res) {
     this.handleRequest(req, res, async () => {
-      const { accessory_id, name, image_url } = req.body;
+      const { accessory_id } = req.query;
       try {
         const accessory = await models.accessory.findOne({
           where: { accessory_id },
@@ -63,7 +63,7 @@ class accessoryController extends BaseController {
             message: "Failed to find the accessory.",
           });
         } else {
-          return res.status(201).json({
+          return res.status(200).json({
             success: true,
             accessory: {
               id: accessory.accessory_id,
@@ -130,7 +130,7 @@ class accessoryController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           accessory: {
             id: accessory.accessory_id,
@@ -166,7 +166,7 @@ class accessoryController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           accessory: {
             id: accessory.accessory_id,

@@ -172,7 +172,7 @@ class fitsController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           fit: {
             id: fit.fit_id,
@@ -208,7 +208,7 @@ class fitsController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           fit: {
             id: fit.fit_id,
@@ -340,7 +340,7 @@ class fitsController extends BaseController {
   async addClothingToFit(req, res) {
     this.handleRequest(req, res, async () => {
       const { fit_id } = req.params;
-      const { clothing_ids } = req.body;
+      const { clothing_id } = req.body;
 
       try {
         const fit = await models.fits.findOne({
@@ -354,15 +354,15 @@ class fitsController extends BaseController {
           });
         }
 
-        await fit.addClothing(clothing_ids);
+        await fit.addClothing(clothing_id);
 
-        console.log("Added clothing IDs:", clothing_ids);
+        console.log("Added clothing ID(s):", clothing_id);
 
         return res.status(200).json({
           success: true,
           message: "Clothing items added to fit successfully",
           fit,
-          clothing_ids,
+          clothing_id,
         });
       } catch (dbErr) {
         console.error("Database error occurred:", dbErr);
@@ -378,7 +378,7 @@ class fitsController extends BaseController {
   async addAccessoriesToFit(req, res) {
     this.handleRequest(req, res, async () => {
       const { fit_id } = req.params;
-      const { accessory_ids } = req.body;
+      const { accessory_id } = req.body;
 
       try {
         const fit = await models.fits.findOne({
@@ -392,9 +392,9 @@ class fitsController extends BaseController {
           });
         }
 
-        await fit.addAccessory(accessory_ids);
+        await fit.addAccessory(accessory_id);
 
-        console.log("Added accessory IDs:", accessory_ids);
+        console.log("Added accessory ID(s):", accessory_id);
 
         return res.status(200).json({
           success: true,

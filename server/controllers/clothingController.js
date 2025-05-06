@@ -49,7 +49,7 @@ class clothingController extends BaseController {
 
   async getClothing(req, res) {
     this.handleRequest(req, res, async () => {
-      const { clothing_id } = req.body;
+      const { clothing_id } = req.query;
       try {
         const clothing = await models.clothing.findOne({
           where: { clothing_id },
@@ -61,7 +61,7 @@ class clothingController extends BaseController {
             message: "Failed to find the clothing item.",
           });
         } else {
-          return res.status(201).json({
+          return res.status(200).json({
             success: true,
             clothing: {
               id: clothing.clothing_id,
@@ -128,7 +128,7 @@ class clothingController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           clothing: {
             id: clothing.clothing_id,
@@ -164,7 +164,7 @@ class clothingController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           message: "Clothing item deleted.",
           clothing: {

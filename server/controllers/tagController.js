@@ -79,7 +79,7 @@ class tagController extends BaseController {
             message: "Failed to find the tag.",
           });
         } else {
-          return res.status(201).json({
+          return res.status(200).json({
             success: true,
             tag: {
               id: tag.tag_id,
@@ -116,7 +116,7 @@ class tagController extends BaseController {
           });
         }
 
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           tag: {
             id: tag.tag_id,
