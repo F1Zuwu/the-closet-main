@@ -7,7 +7,7 @@
 <p>npm i</p>
 <p>npm start</p>
 <h3>Server</h3>
-<p>cd ./server</p>
-<p>npm i</p>
-<p>node ./database/sync.js</p>
-<p>node ./index.js</p>
+<p>cd ./server \n
+npm i \n
+node ./database/sync.js\n
+node ./index.js</p>
