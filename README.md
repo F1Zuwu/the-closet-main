@@ -3,11 +3,18 @@
 
 <h2>Setup</h2>
 <h3>Client</h3>
-<p>cd ./client</p>
-<p>npm i</p>
-<p>npm start</p>
+
+```bash
+cd ./client
+npm i
+npm start
+```
+
 <h3>Server</h3>
-<p>cd ./server \n
-npm i \n
-node ./database/sync.js\n
-node ./index.js</p>
+
+```bash
+cd ./server
+npm i
+node ./database/sync.js
+node ./index.js
+```
