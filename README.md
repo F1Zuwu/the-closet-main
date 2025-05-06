@@ -5,7 +5,8 @@
 <h3>Client</h3>
 ```bash
 cd ./client
+```bash
 npm i
+```bash
 npm start
-```
 <h3>Server</h3>
