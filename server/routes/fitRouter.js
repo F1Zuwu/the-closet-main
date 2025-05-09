@@ -245,7 +245,7 @@ const { checkAuthenticated } = require("../middleware/auth");
  *         application/json:
  *           schema:
  *             type: object
- *             required: [accessory_id]
+ *             required: [accessory_ids]
  *             properties:
  *               accessory_id:
  *                 type: integer
