@@ -77,8 +77,9 @@ const ViewItemNew = () => {
         fetchWithAuth("/api/fit/save", { method: "POST", body: JSON.stringify({ fit_id: id }) })
             .then(async (res) => {
                 const data = await res.json()
+                //console.log(data)
                 if (data.success) {
-                    navigate("/outfit/" + data.fit.fit_id)
+                    navigate("/")
                 } else {
                     setErrorIsOpen(true)
                     setErrorMessage({ title: "Error!", message: data.message })
@@ -131,6 +132,7 @@ const ViewItemNew = () => {
     useEffect(() => {
 
         if (selectedClothingIds.length === 0) { } else {
+            console.log("a" + selectedClothingIds)
             fetchWithAuth(`/api/fit/${id}/addClothing`, { method: "POST", body: JSON.stringify({ clothing_ids: selectedClothingIds }) })
                 .then(async (res) => {
                     const data = await res.json()
@@ -210,7 +212,7 @@ const ViewItemNew = () => {
                                 <img alt="preview" id="img" class="limit-img rounded-md" src={data.image_url}></img>
 
                                 <svg class="absolute hover-icon-show opacity-0" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="100" viewBox="0,0,256,256">
-                                    <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"><g transform="scale(8.53333,8.53333)"><path d="M25.98047,2.99023c-0.03726,0.00118 -0.07443,0.00444 -0.11133,0.00977h-5.86914c-0.36064,-0.0051 -0.69608,0.18438 -0.87789,0.49587c-0.18181,0.3115 -0.18181,0.69676 0,1.00825c0.18181,0.3115 0.51725,0.50097 0.87789,0.49587h3.58594l-10.29297,10.29297c-0.26124,0.25082 -0.36648,0.62327 -0.27512,0.97371c0.09136,0.35044 0.36503,0.62411 0.71547,0.71547c0.35044,0.09136 0.72289,-0.01388 0.97371,-0.27512l10.29297,-10.29297v3.58594c-0.0051,0.36064 0.18438,0.69608 0.49587,0.87789c0.3115,0.18181 0.69676,0.18181 1.00825,0c0.3115,-0.18181 0.50097,-0.51725 0.49587,-0.87789v-5.87305c0.04031,-0.29141 -0.04973,-0.58579 -0.24615,-0.80479c-0.19643,-0.219 -0.47931,-0.34042 -0.77338,-0.33192zM6,7c-1.09306,0 -2,0.90694 -2,2v15c0,1.09306 0.90694,2 2,2h15c1.09306,0 2,-0.90694 2,-2v-10v-2.57812l-2,2v2.57813v8h-15v-15h8h2h0.57813l2,-2h-2.57812h-2z"></path></g></g>
+                                    <g fill="#fffff  f" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"><g transform="scale(8.53333,8.53333)"><path d="M25.98047,2.99023c-0.03726,0.00118 -0.07443,0.00444 -0.11133,0.00977h-5.86914c-0.36064,-0.0051 -0.69608,0.18438 -0.87789,0.49587c-0.18181,0.3115 -0.18181,0.69676 0,1.00825c0.18181,0.3115 0.51725,0.50097 0.87789,0.49587h3.58594l-10.29297,10.29297c-0.26124,0.25082 -0.36648,0.62327 -0.27512,0.97371c0.09136,0.35044 0.36503,0.62411 0.71547,0.71547c0.35044,0.09136 0.72289,-0.01388 0.97371,-0.27512l10.29297,-10.29297v3.58594c-0.0051,0.36064 0.18438,0.69608 0.49587,0.87789c0.3115,0.18181 0.69676,0.18181 1.00825,0c0.3115,-0.18181 0.50097,-0.51725 0.49587,-0.87789v-5.87305c0.04031,-0.29141 -0.04973,-0.58579 -0.24615,-0.80479c-0.19643,-0.219 -0.47931,-0.34042 -0.77338,-0.33192zM6,7c-1.09306,0 -2,0.90694 -2,2v15c0,1.09306 0.90694,2 2,2h15c1.09306,0 2,-0.90694 2,-2v-10v-2.57812l-2,2v2.57813v8h-15v-15h8h2h0.57813l2,-2h-2.57812h-2z"></path></g></g>
                                 </svg>
 
 
@@ -263,7 +265,7 @@ const ViewItemNew = () => {
                                 }
 
                             </div>
-                            <div class="bg-TagsBackground rounded-md min-w-80 pl-4 pr-8 mr-8 pt-4 overflow-y-scroll data-obj-anim-5 opacity-0 scale-110 translate-y-12">
+                            <div class="bg-TagsBackground rounded-md min-w-80 pl-4 pr-8 mr-8 pt-4 overflow-y-scroll data-obj-anim-5 opacity-0 scale-110 translate-y-12 h-72">
                                 {
                                     accessory.length === 0 ? (
                                         <div class="w-full h-full flex items-center justify-center">

@@ -115,7 +115,7 @@ const Home = () => {
 
             <div class="flex justify-center w-full absolute top-32">
                 <div class="w-full overflow-x-hidden">
-                    <h1 class="text-center text-base font-w-title pb-4">Find you’r perfect outfit for the day!</h1>
+                    <h1 class="text-center text-base font-w-title pb-4">Find your perfect outfit for the day!</h1>
                     <div class="w-full flex justify-center relative">
                         <div class="w-2/3 relative">
                             <svg onClick={() => searchByName()} class="absolute right-6 top-2.5 cursor-pointer" width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_18_5)"><circle cx="10" cy="10" r="9.5" stroke="#352F2C" /><path d="M16 17L23.5 25.5" stroke="#352F2C" /></g><defs><clipPath id="clip0_18_5"><rect width="24" height="26" fill="white" /></clipPath></defs></svg>
@@ -143,7 +143,7 @@ const Home = () => {
                                 {fitsData.map((value, index) => {
                                     return (
                                         <div key={index} class="cursor-pointer hover:shadow-sm card-hover-name-show" onClick={() => HandleTransistion(value.fit_id)}>
-                                            <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md" src={value.image_url}></img></TiltComponent>
+                                            <TiltComponent cardName={value.name}><img alt={value.name} class="rounded-md min-w-64 min-h-64" src={value.image_url}></img></TiltComponent>
                                         </div>
                                     )
                                 })}

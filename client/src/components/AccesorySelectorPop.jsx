@@ -87,7 +87,7 @@ const AccessorySlectorPop = ({ setIsAccessorySelectorOpen, setSelectedAccessoryI
                 <h1 class="text-center font-w-title">Accessories selector</h1>
                 <p class="text-center font-w-light">Add or select Accessories that are used in this outfit</p>
                 <div class="bg-TagsBackground mb-2 mt-2 rounded-md">
-                    <input id="accessory-name-input" placeholder="Clothing name" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
+                    <input id="accessory-name-input" placeholder="Accessory name" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                     <input id="accessory-img-input" placeholder="image url" class="w-full bg-transparent text-text-primary outline-none text-center h-8 rounded-t-md"></input>
                     <button onClick={() => addAccessory()} class="bg-black rounded-b-lg w-full flex justify-center bg-opacity-10 items-center text-UnSelPrimary hover:text-primary pb-1.5 pt-1.5">Add!</button>
                 </div>
