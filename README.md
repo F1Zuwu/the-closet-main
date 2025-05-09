@@ -19,6 +19,10 @@ node ./database/sync.js
 node ./index.js
 ```
 
+<h3>API Docs</h3>
+
+<a href="https://closet.vocoprojektid.ee/api-docs/">https://closet.vocoprojektid.ee/api-docs/</a>
+
 <h2>Süsteemi Arhitektuur</h2>
 
 ![image](https://github.com/user-attachments/assets/d63884ec-e2af-4b0c-9e4b-20e2aff29dee)
