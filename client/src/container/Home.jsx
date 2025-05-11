@@ -128,7 +128,7 @@ const Home = () => {
                     {isSearching && (
                         <h1 id="search-indicator" class="pl-24 -mb-8 font-w-title text-2xl mt-6">{query}</h1>
                     )}
-                    <div id="container-fits-" class="flex justify-center pt-12 pl-24 pr-24 pb-24 container-closet opacity-0 overflow-x-hidden">
+                    <div id="container-fits-" class="flex justify-center pt-12 pl-24 pr-24 pb-48 container-closet opacity-0 overflow-x-hidden">
 
                         {fitsData.length === 0 && userData && !isSearching && (
                             <h1><button class="underline" onClick={() => navigate("/add")}>Add</button> fits to your collection to start viewing them!</h1>
@@ -152,18 +152,14 @@ const Home = () => {
                         )}
 
                     </div>
-                    {fitsData.length > 0 && (
-                        <Footer></Footer>
-                    )}
                 </div>
 
             </div>
 
-            {fitsData.length === 0 && (
-                <div class="absolute bottom-0 w-full">
-                    <Footer></Footer>
-                </div>
-            )}
+            <div class="bottom-0 w-full fixed pt-8">
+                <Footer></Footer>
+            </div>
+
 
 
             <div class="w-full absolute">
