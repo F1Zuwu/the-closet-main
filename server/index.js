@@ -38,7 +38,7 @@ const swaggerOptions = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["./routes/*.js"], // Adjust if routes are in subfolders
+  apis: ["./routes/*.js"], 
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
@@ -57,3 +57,5 @@ app.listen(3005, () => {
   console.log("👍 | http://localhost:3005");
   console.log("📘 | Swagger docs at http://localhost:3005/api-docs");
 });
+
+module.exports = app
