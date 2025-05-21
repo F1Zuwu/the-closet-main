@@ -21,13 +21,6 @@ const Add = () => {
     const [selectedClothingIds, setSelectedClothingIds] = useState([])
     const [selectedAccessoryids, setSelectedAccessoryIds] = useState([])
 
-    useEffect(() => {
-        console.log("DEBUG SELECTED IDS:")
-        console.log("tags", selectedTagIds)
-        console.log("clothing", selectedClothingIds)
-        console.log("accessory", selectedAccessoryids)
-    }, [selectedTagIds, selectedAccessoryids, selectedClothingIds])
-
     const handleAddOutfit = () => {
         const outfit_name = document.getElementById("outfit-name").value
         const imageData = document.getElementById("outfit-image").value

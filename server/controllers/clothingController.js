@@ -32,8 +32,7 @@ class clothingController extends BaseController {
           success: true,
           message: "Clothing item added",
           clothing: {
-            name: clothing.name,
-            image_url: clothing.image_url,
+            clothing
           },
         });
       } catch (dbErr) {
